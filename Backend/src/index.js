@@ -2,8 +2,9 @@ import app from "./app";
 import "@babel/polyfill";
 
 async function main() {
-    await app.listen(4200);
-    console.log('Server on port 4200');
+    const port = 4000
+    await app.listen(port);
+    console.log('Server on port ',port);
 }
 
 main();

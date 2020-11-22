@@ -60,14 +60,15 @@ CREATE TABLE expense (
 CREATE TABLE sale (
 
     id_sale SERIAL NOT NULL,
+    number INT NOT NULL,
     date DATE NOT NULL,
     total FLOAT NOT NULL,
     payment FLOAT NOT NULL,
     id_cliente INT NOT NULL,
     CONSTRAINT pk_sale PRIMARY KEY (id_sale),
     CONSTRAINT fk_cliente FOREIGN KEY (id_cliente)
-        REFERENCES public.client(id_client)
-
+        REFERENCES public.client(id_client),
+    UNIQUE(number)
 )
 
 CREATE TABLE product_purchase (

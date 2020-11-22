@@ -232,6 +232,11 @@ export async function validateAccount(req, res) {
                                 })
                             })
                         }
+                        else{
+                            return res.status(500).json({
+                                message: 'Error, user not exist',
+                            });
+                        }
                     })
                 }
                 else {
