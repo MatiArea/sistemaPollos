@@ -25,7 +25,6 @@ export class LoginComponent {
         var token = sessionStorage.getItem('token');
         var token_decode = jwt_decode(token);
         if (token_decode['admin'] == true) {
-          console.log('Entre!')
           this.router.navigate(['/admin']);
         }
       }, error => {

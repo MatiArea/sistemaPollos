@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { SaleComponent } from './sale/sale.component';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 
 
@@ -16,7 +17,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
   declarations: [
     ClientComponent,
     ProductComponent,
-    SaleComponent
+    SaleComponent,
+    PurchaseComponent
   ],
   imports: [
     CommonModule,

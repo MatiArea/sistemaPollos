@@ -20,6 +20,7 @@ export class SaleService {
     })
 
     return this.http.get(`${this.url}/sale/`, { headers }).pipe(data => {
+      console.log(data)
       return data
     });
   }

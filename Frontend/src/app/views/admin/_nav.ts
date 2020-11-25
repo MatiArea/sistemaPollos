@@ -8,6 +8,11 @@ export const navItems: INavData[] = [
   {
     name: 'Ventas',
     url: '/admin/ventas',
+    icon: 'fas fa-dollar-sign'
+  },
+  {
+    name: 'Compras',
+    url: '/admin/compras',
     icon: 'icon-credit-card'
   },
   {
