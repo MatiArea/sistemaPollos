@@ -92,9 +92,9 @@ export async function deleteProduct(req, res) {
                 message: "Error, invalid token"
             })
         }
-        const body = req.body
-        if (body && body.id) {
-            await Product.findByPk(body.id).then(product => {
+        const params = req.params
+        if (params && params.id) {
+            await Product.findByPk(params.id).then(product => {
                 if (product) {
                     product.destroy().then(productDeleted => {
                         if (productDeleted) {

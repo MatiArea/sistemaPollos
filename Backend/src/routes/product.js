@@ -16,6 +16,6 @@ router.post('/new',validateToken, createProduct);
 router.put('/update',validateToken, updateProduct);
 
 /*-----DELETE-----*/
-router.delete('/delete',validateToken, deleteProduct);
+router.delete('/delete/:id',validateToken, deleteProduct);
 
 export default router;
