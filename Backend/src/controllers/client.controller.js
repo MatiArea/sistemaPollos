@@ -173,21 +173,37 @@ export async function getOneClient(req,res){
             })
         }
     })
-
 }
 
-export async function updateBalance(idClient,balance){
-    console.log("HOLA CLIENTE")
-    if (idClient && balance){
-        await Client.findByPk(idClient).then( async clientToUpdate => {
-            if(clientToUpdate){
-                console.log("HOLA")
-                clientToUpdate.balance = clientToUpdate.balance - balance
-                await clientToUpdate.save({clientToUpdate}).then( data => {
-                    console.log(data)
-                    return Promise(data)
-                }) 
-            }
-        })
-    }
+export async function updateBalance(req,res){
+    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+        if (error) {
+            return res.status(500).json({
+                message: "Error, invalid token"
+            });
+        }
+        const body = req.body
+        if(body){
+            await Client.findByPk(body.idClient).then(async client => {
+                if(client){
+                    client.balance -= body.amount
+                    await client.save().then(client =>{
+                        return res.status(200).json({
+                            client
+                        })
+                    })
+                }
+                else{
+                    return res.status(500).json({
+                        message: "Error, Client not exist"
+                    })
+                }
+            })
+        }
+        else{
+            return res.status(500).json({
+                message: "Error, Client not exist"
+            })
+        }
+    })
 }

@@ -18,27 +18,16 @@
             <th style="width: 20%" class="text-center">Fecha</th>
             <th style="width: 40%" class="text-center">Cliente</th>
             <th style="width: 20%" class="text-center">Monto</th>
-            <th style="width: 20%" class="text-center"></th>
           </tr>
         </thead>
         <tbody>
           <!---->
           <tr *ngFor="let movement of movements">
-            <td class="text-center">{{ movement.date | date:'dd/MM/yyyy' }}</td>
+            <td class="text-center">
+              {{ movement.date | date: "dd/MM/yyyy" }}
+            </td>
             <td class="text-center">{{ movement.client.name }}</td>
             <td class="text-center">${{ movement.amount }}</td>
-            <td class="text-center">
-              <i
-                class="fas fa-pen"
-                style="cursor: pointer"
-                (click)="getOneMovement(movement)"
-              ></i>
-              <i
-                class="fas fa-trash-alt"
-                style="cursor: pointer"
-                (click)="deleteMovement(movement)"
-              ></i>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -109,7 +98,9 @@
                   class="form-control"
                   (change)="clientSelected($event.target.value)"
                 >
-                  <option value="0" disabled>Seleccionar Cliente</option>
+                  <option value="0" selected>
+                    Seleccionar Cliente
+                  </option>
                   <option
                     *ngFor="let client of clients"
                     value="{{ client.id_client }}"

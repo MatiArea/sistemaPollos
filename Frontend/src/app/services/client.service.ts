@@ -90,4 +90,22 @@ export class ClientService {
     });
   }
 
+  updateBalance(id_client:number,amount:number){
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString
+    })
+
+    const body = {
+      idClient:id_client,
+      amount
+    }
+
+    return this.http.put(`${this.url}/client/updatebalance`,body,{headers}).pipe(data => {
+      return data
+    })
+  }
+
 }

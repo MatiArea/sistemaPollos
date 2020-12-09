@@ -26,20 +26,6 @@ export class MovementService {
     });
   }
 
-  getOneMovement(id:number){
-    const token = sessionStorage.getItem('token');
-    const tokenString = 'Bearer ' + token
-
-    const headers = new HttpHeaders({
-      'Authorization': tokenString
-    })
-
-    return this.http.get(`${this.url}/movement/${id}`, { headers }).pipe(data => {
-      return data
-    })
-  }
-
-
   createMovement(movement:Movement){
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
@@ -56,19 +42,5 @@ export class MovementService {
     return this.http.post(`${this.url}/movement/new`,body,{headers}).pipe( data => {
       return data
     })
-  }
-
-  deleteMovement(idMovement:number){
-    const token = sessionStorage.getItem('token');
-    const tokenString = 'Bearer ' + token
-
-    const headers = new HttpHeaders({
-      'Authorization': tokenString
-    })
-
-    return this.http.delete(`${this.url}/movement/delete/${idMovement}`,{ headers }).pipe(data => {
-      return data
-    })
-  }
-  
+  }  
 }

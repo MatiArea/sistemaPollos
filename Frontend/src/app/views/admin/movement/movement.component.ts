@@ -19,88 +19,81 @@ export class MovementComponent implements OnInit {
   clientId: number
   clients: []
 
-  constructor(private clientService:ClientService, private toastr:ToastrService, private movementService:MovementService) { 
+  constructor(private clientService: ClientService, private toastr: ToastrService, private movementService: MovementService) {
 
     this.movement = new Movement()
 
   }
 
-  @ViewChild('editMovementModal', {static: false}) public editMovementModal: ModalDirective;
-  @ViewChild('newMovementModal', {static: false}) public newMovementModal: ModalDirective;
+  @ViewChild('editMovementModal', { static: false }) public editMovementModal: ModalDirective;
+  @ViewChild('newMovementModal', { static: false }) public newMovementModal: ModalDirective;
 
   ngOnInit(): void {
     this.getAllMovements()
   }
-  
-  getAllClients(){
+
+  getAllClients() {
     this.clientService.getAllClients().subscribe(clients => {
       this.clients = clients['clients']
     });
   }
 
-  getAllMovements(){
-    this.movementService.getAllMovements().subscribe(movements =>{
+  getAllMovements() {
+    this.movementService.getAllMovements().subscribe(movements => {
       this.movements = movements['movements']
     })
-    
+
   }
 
-  getOneMovement(movement:Movement){
-    // this.movementService.getOneMovement().subscribe(movement => {
-    //   this.oneMovement = movement
-    // })
-  }
-
-
-  clientSelected(id:number){
+  clientSelected(id: number) {
     this.clientId = id
   }
 
-  openNewMovementModal(){
-    this.clientId = 0
+  openNewMovementModal() {
     this.getAllClients()
+    this.clientId = 0
     this.newMovementModal.show()
   }
 
 
-  createMovement(createForm:NgForm){
-    this.movement.client = this.clientId
-    this.movementService.createMovement(this.movement).subscribe( data => {
+  createMovement(createForm: NgForm) {
+    if(this.clientId != 0){
+      this.movement.client = this.clientId
       
-      this.toastr.success('Movimiento creado con exito', 'Exito!', {
+      this.movementService.createMovement(this.movement).subscribe(data => {
+        this.clientService.updateBalance(this.clientId, this.movement.amount).subscribe(dataClient => {
+          
+          this.toastr.success('Movimiento creado con exito', 'Exito!', {
+            closeButton: true,
+            progressBar: true
+          });
+          createForm.reset();
+          this.newMovementModal.hide();
+          this.movement = new Movement();
+          this.getAllMovements();
+  
+        }, (error) => {
+          if (error) {
+            this.toastr.error('No se pude cargar el movimiento', 'Error!', {
+              closeButton: true,
+              progressBar: true
+            });
+          }
+        })
+      }, (error) => {
+        if (error) {
+          this.toastr.error('No se pude cargar el movimiento', 'Error!', {
+            closeButton: true,
+            progressBar: true
+          });
+        }
+      })
+    }else{
+      this.toastr.error('No se pude cargar el movimiento', 'Error!', {
         closeButton: true,
         progressBar: true
       });
-      this.newMovementModal.hide();      
-      createForm.reset();
-      this.movement = new Movement();
-      this.getAllMovements();
-
-    },(error)=>{
-      if(error){
-        this.toastr.error('No se pude cargar el componente', 'Error!', {
-          closeButton: true,
-          progressBar: true
-        });
-      }
-    })
-  }
-
-  deleteMovement(movementDelet:Movement){
-    this.movementService.deleteMovement(movementDelet.id_movement).subscribe( data => {
-      this.toastr.success('Movimiento eliminado con exito', 'Exito!', {
-        closeButton: true,
-        progressBar: true
-      });
-      this.getAllMovements();
-    }, (error) => {
-      if(error){
-        this.toastr.error('No se pude eliminar el movimiento', 'Error!', {
-          closeButton: true,
-          progressBar: true
-        });
-      }
-    })
+    }
   }
 
 }
