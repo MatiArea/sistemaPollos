@@ -7,6 +7,7 @@ import { ClientComponent } from './client/client.component';
 import { ProductComponent } from './product/product.component';
 import { SaleComponent } from './sale/sale.component';
 import { PurchaseComponent } from './purchase/purchase.component'
+import { MovementComponent } from './movement/movement.component';
 
 
 export const routes: Routes = [
@@ -26,10 +27,25 @@ export const routes: Routes = [
   },
   {
     path: 'clientes',
-    component: ClientComponent,
     data: {
-      title: 'Cliente'
-    }
+      title: 'Clientes'
+    },
+    children: [
+      {
+        path: 'listado',
+        component: ClientComponent,
+        data: {
+          title: 'Clientes / Listado'
+        }
+      },
+      {
+        path: 'movimientos',
+        component: MovementComponent,
+        data: {
+          title: 'Clientes / Movimientos'
+        }
+      },
+    ]
   },
   {
     path: 'productos',

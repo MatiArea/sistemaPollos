@@ -1,11 +1,12 @@
 import {  Sequelize  } from 'sequelize';
 import { sequelize } from "../BaseDeDatos/database";
+import Client from "../models/Client";
 
 
-const Expense = sequelize.define(
-    "expense",
+const Movement = sequelize.define(
+    "movement",
     {
-        id_expense : {
+        id_movement : {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -15,17 +16,10 @@ const Expense = sequelize.define(
             type: Sequelize.DATE,
             allowNull : false,
         },
-        type : {
-            type : Sequelize.STRING,
-            allowNull : false,
-        },
         amount : {
             type : Sequelize.FLOAT,
             allowNull : false,
         },
-        description : {
-            type: Sequelize.STRING
-        }
     },
     {
         freezeTableName: true,
@@ -33,4 +27,8 @@ const Expense = sequelize.define(
     }
 );
 
-export default Expense;
+
+Client.hasMany(Movement,{ foreignKey: "id_client"});
+Movement.belongsTo(Client, { foreignKey: "id_client"});
+
+export default Movement;

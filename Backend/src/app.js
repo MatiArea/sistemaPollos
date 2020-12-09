@@ -1,12 +1,14 @@
 import express, { json } from "express";
 import morgan from "morgan";
 
+
 // importing routes
 import clientRouter from "./routes/client";
 import expenseRouter from "./routes/expense";
 import userRouter from "./routes/user";
 import productRouter from "./routes/product";
 import purchaseRouter from "./routes/purchase";
+import movementRouter from "./routes/movement"
 
 // initialization
 const app = express();
@@ -32,5 +34,7 @@ app.use("/expense", expenseRouter);
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/purchase", purchaseRouter);
+app.use("/movement", movementRouter);
+
 
 export default app;

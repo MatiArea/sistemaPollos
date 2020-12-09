@@ -92,7 +92,7 @@ export async function deleteClient(req, res) {
                 message: "Error, invalid token"
             });
         }
-        const idClient = req.body.id
+        const idClient = req.params.id
         if (idClient) {
             await Client.findOne({
                 where: {
@@ -100,7 +100,7 @@ export async function deleteClient(req, res) {
                 }
             }).then(async client => {
                 if (client) {
-                    await Client.destroy().then(data => {
+                    await client.destroy().then(data => {
                         return res.status(200).json({
                             message: "Client deleted succesffully"
                         })
@@ -173,4 +173,21 @@ export async function getOneClient(req,res){
             })
         }
     })
+
+}
+
+export async function updateBalance(idClient,balance){
+    console.log("HOLA CLIENTE")
+    if (idClient && balance){
+        await Client.findByPk(idClient).then( async clientToUpdate => {
+            if(clientToUpdate){
+                console.log("HOLA")
+                clientToUpdate.balance = clientToUpdate.balance - balance
+                await clientToUpdate.save({clientToUpdate}).then( data => {
+                    console.log(data)
+                    return Promise(data)
+                }) 
+            }
+        })
+    }
 }

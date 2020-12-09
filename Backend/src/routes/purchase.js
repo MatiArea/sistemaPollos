@@ -7,9 +7,9 @@ import { createPurchase, deletePurchase, getAllPurchases, updatePurchase } from 
 router.get('/', getAllPurchases);
 
 /*-----POST-----*/
+router.post('/new', createPurchase);
 
 /*-----PUT-----*/
-router.put('/new', createPurchase);
 router.put('/update/:id', updatePurchase);
 
 /*-----DELETE-----*/

@@ -1,4 +1,5 @@
 import Product from '../models/Product';
+import Purchase from '../models/Purchase';
 const jwt = require('jsonwebtoken');
 
 export async function createProduct(req, res) {
@@ -166,7 +167,6 @@ export async function getOneProduct(req, res) {
             else {
                 return res.status(500).json({
                     message: "Error, product not exist",
-
                 })
             }
         }).catch(error => {

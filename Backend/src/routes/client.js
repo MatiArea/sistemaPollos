@@ -16,6 +16,6 @@ router.post('/new',validateToken,createClient);
 router.put('/update',validateToken,updateClient);
 
 /*-----DELETE-----*/
-router.delete('/delete',validateToken,deleteClient);
+router.delete('/delete/:id',validateToken,deleteClient);
 
 export default router;

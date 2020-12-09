@@ -17,8 +17,19 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Clientes',
-    url: '/admin/clientes',
-    icon: 'icon-people'
+    icon: 'icon-people',
+    children: [
+      {
+        name: 'Listado',
+        url: '/admin/clientes/listado',
+        icon: 'icon-star'
+      },
+      {
+        name: 'Movimientos',
+        url: '/admin/clientes/movimientos',
+        icon: 'icon-star'
+      },
+    ]
   },
   {
     name: 'Productos',
