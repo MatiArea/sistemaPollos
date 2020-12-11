@@ -1,7 +1,6 @@
 import Sequelize from 'sequelize';
 import { sequelize } from "../BaseDeDatos/database";
 import Product from "../models/Product";
-import ProductPurchase from "../models/ProductPurchase";
 
 
 const Purchase = sequelize.define(
@@ -27,7 +26,7 @@ const Purchase = sequelize.define(
     }
 );
 
-Purchase.belongsToMany(Product, { through: ProductPurchase });
-Product.belongsToMany(Purchase, { through: ProductPurchase });
+Product.hasMany(Purchase,{ foreignKey: "id_product"});
+Purchase.belongsTo(Product, { foreignKey: "id_product"});
 
 export default Purchase; 

@@ -2,17 +2,18 @@ import { Router } from "express";
 const router = Router();
 
 import { createPurchase, deletePurchase, getAllPurchases, updatePurchase } from '../controllers/purchase.controller'
+import { validateToken } from "../middlewares/auth";
 
 /*-----GET-----*/
-router.get('/', getAllPurchases);
+router.get('/',validateToken,getAllPurchases);
 
 /*-----POST-----*/
-router.post('/new', createPurchase);
+router.post('/new',validateToken,createPurchase);
 
 /*-----PUT-----*/
-router.put('/update/:id', updatePurchase);
+router.put('/update/:id',validateToken,updatePurchase);
 
 /*-----DELETE-----*/
-router.delete('/delete/:id', deletePurchase);
+router.delete('/delete/:id',validateToken,deletePurchase);
 
 export default router;

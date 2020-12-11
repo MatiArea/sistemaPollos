@@ -96,7 +96,6 @@ export async function getOneMovement(req, res) {
       });
     }
     const params = req.params;
-    console.log(params.id);
     await Movement.findByPk(params.id)
       .then((movement) => {
         if (movement) {
