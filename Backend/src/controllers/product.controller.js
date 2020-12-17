@@ -52,10 +52,11 @@ export async function updateProduct(req, res) {
             })
         }
         const body = req.body
-        if (body && body.id && body.name && body.code && body.sale_price) {
+        if (body && body.id && body.name && body.code && body.sale_price && body.stock.toString()) {
             await Product.update({
                 code: body.code,
                 name: body.name,
+                stock: body.stock,
                 sale_price: body.sale_price
             }, {
                 where: {

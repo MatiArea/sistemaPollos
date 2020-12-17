@@ -17,6 +17,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Clientes',
+    url: '/admin/clientes',
     icon: 'icon-people',
     children: [
       {
@@ -35,6 +36,11 @@ export const navItems: INavData[] = [
     name: 'Productos',
     url: '/admin/productos',
     icon: 'icon-basket-loaded'
+  },
+  {
+    name: 'Gastos',
+    url: '/admin/gastos',
+    icon: 'icon-credit-card'
   },
   {
     name: 'Informes',

@@ -10,6 +10,7 @@ import { SaleComponent } from './sale/sale.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { MovementComponent } from './movement/movement.component';
+import { ExpenseComponent } from './expense/expense.component';
 
 
 
@@ -20,7 +21,8 @@ import { MovementComponent } from './movement/movement.component';
     ProductComponent,
     SaleComponent,
     PurchaseComponent,
-    MovementComponent
+    MovementComponent,
+    ExpenseComponent
   ],
   imports: [
     CommonModule,

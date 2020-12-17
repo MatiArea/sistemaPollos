@@ -11,6 +11,7 @@ export class SaleService {
   constructor( private http:HttpClient) { 
     this.url = 'http://127.0.0.1:4000';
   }
+  
   getAllsales() {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token

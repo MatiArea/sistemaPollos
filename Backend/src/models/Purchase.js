@@ -18,6 +18,14 @@ const Purchase = sequelize.define(
         date: {
             type: Sequelize.DATE,
             allowNull: false,
+        },
+        quantity: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        price:{
+            type: Sequelize.FLOAT,
+            allowNull: false
         }
     },
     {

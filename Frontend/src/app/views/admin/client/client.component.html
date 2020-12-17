@@ -94,6 +94,7 @@
                     name="name"
                     [(ngModel)]="client.name"
                     placeholder="Juan Carlos Gimenez"
+                    required
                   />
                 </div>
               </div>
@@ -109,6 +110,7 @@
                     name="address"
                     [(ngModel)]="client.address"
                     placeholder="Calle Del Valle 1820"
+                    required
                   />
                 </div>
               </div>
@@ -123,7 +125,7 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Crear cliente</button>
+          <button type="submit" class="btn btn-success" [disabled]="!createForm.valid">Crear cliente</button>
         </div>
       </form>
     </div>
@@ -168,6 +170,7 @@
                     name="name"
                     [(ngModel)]="clientToEdit.name"
                     placeholder="Juan Carlos Gimenez"
+                    required
                   />
                 </div>
               </div>
@@ -183,6 +186,7 @@
                     name="address"
                     [(ngModel)]="clientToEdit.address"
                     placeholder="Calle Del Valle 1820"
+                    required
                   />
                 </div>
               </div>
@@ -197,6 +201,7 @@
                     id="editBalance"
                     name="balance"
                     [(ngModel)]="clientToEdit.balance"
+                    required
                   />
                 </div>
               </div>
@@ -211,7 +216,7 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Actualizar cliente</button>
+          <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Actualizar cliente</button>
         </div>
       </form>
     </div>

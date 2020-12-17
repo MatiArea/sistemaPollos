@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Purchase } from '../../../models/purchase.model';
 import { ProductService } from '../../../services/product.service';
 import { PurchaseService } from '../../../services/purchase.service';
 
@@ -11,21 +12,22 @@ import { PurchaseService } from '../../../services/purchase.service';
 })
 export class PurchaseComponent implements OnInit {
 
-  constructor(private purchaseService: PurchaseService, private productService: ProductService, private toastr: ToastrService) { }
+  constructor(private purchaseService: PurchaseService, private productService: ProductService, private toastr: ToastrService) { 
+    this.purchase = new Purchase()
+  }
 
   products: any
   idProductSelect: any
   items: any
-  cantidad: number
-  precio: number
+  purchase: Purchase
   total: number
-  number:any
-  date:any
+  purchases: any
 
   @ViewChild('editPurchaseModal', { static: false }) public editPurchaseModal: ModalDirective;
   @ViewChild('newPurchaseModal', { static: false }) public newPurchaseModal: ModalDirective;
 
   ngOnInit(): void {
+    this.getAllPurchase()
   }
 
   getAllProducts() {
@@ -33,9 +35,14 @@ export class PurchaseComponent implements OnInit {
       this.products = data['products']
     })
   }
-
+  
   getAllPurchase(){
-    console.log('Hola')
+    this.purchases = []
+    this.purchaseService.getAllPurchase().subscribe(data =>{
+      this.purchases = data['purchases']
+      console.log(this.purchases)
+    })
+
   }
 
   opentNewPurchaseModal() {
@@ -50,8 +57,10 @@ export class PurchaseComponent implements OnInit {
 
   createPurchase(createForm: any) {
     const purchase = {
-      date:this.date,
-      number:this.number,
+      date:this.purchase.date,
+      number:this.purchase.number,
+      price:this.purchase.price,
+      quantity:this.purchase.quantity,
       idProduct: this.idProductSelect
     }
     this.purchaseService.createPurchase(purchase).subscribe(data => {
@@ -73,7 +82,21 @@ export class PurchaseComponent implements OnInit {
     })
   }
 
-  getAllPurchase(){
-    
+  deletePurchase(idPurchase:number){
+      this.purchaseService.deletePurchase(idPurchase).subscribe( data => {
+        this.toastr.success('Compra eliminada con exito', 'Exito!', {
+          closeButton: true,
+          progressBar: true
+        });
+        this.getAllPurchase();
+      }, (error) => {
+        if(error){
+          this.toastr.error('No se pude eliminar la compra', 'Error!', {
+            closeButton: true,
+            progressBar: true
+          });
+        }
+      })
   }
+
 }

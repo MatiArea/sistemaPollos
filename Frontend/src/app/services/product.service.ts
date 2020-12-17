@@ -69,6 +69,7 @@ export class ProductService {
       id: product.id_product,
       code: product.code,
       name: product.name,
+      stock: product.stock,
       sale_price : product.sale_price
     }
     

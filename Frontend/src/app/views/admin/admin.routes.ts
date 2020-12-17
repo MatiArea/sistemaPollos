@@ -8,6 +8,7 @@ import { ProductComponent } from './product/product.component';
 import { SaleComponent } from './sale/sale.component';
 import { PurchaseComponent } from './purchase/purchase.component'
 import { MovementComponent } from './movement/movement.component';
+import { ExpenseComponent } from './expense/expense.component';
 
 
 export const routes: Routes = [
@@ -52,6 +53,13 @@ export const routes: Routes = [
     component: ProductComponent,
     data: {
       title: 'Productos'
+    }
+  },
+  {
+    path:'gastos',
+    component: ExpenseComponent,
+    data:{
+      title:'Gastos'
     }
   },
   {

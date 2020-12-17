@@ -7,12 +7,11 @@ export async function createExpense(req, res) {
             return res.status(500).json({
                 message: "Error, invalid token"
             });
-
-
         }
         const body = req.body;
         if (body) {
-            if (body.type && body.amount && body.description) {
+            console.log(body)
+            if (body.type && (body.amount >=0) && body.description) {
                 const today = new Date();
                 const expense = {
                     date: today,
@@ -25,6 +24,7 @@ export async function createExpense(req, res) {
                         message: "Expenses created succeffully"
                     })
                 }).catch(error => {
+                    console.log(error,"1")
                     return res.status(500).json({
                         message: "Error, expense not created",
                         error
@@ -32,18 +32,19 @@ export async function createExpense(req, res) {
                 })
             }
             else {
+                console.log("2")
                 return res.status(500).json({
                     message: "Error, expense not created"
                 })
             }
         }
         else {
+            console.log("3")
             return res.status(500).json({
                 message: "Error, expense not created"
             })
         }
     })
-
 };
 
 export async function updateExpense(req, res) {
@@ -54,7 +55,7 @@ export async function updateExpense(req, res) {
             });
         }
         const body = req.body
-        if (body.id && body.type && body.amount) {
+        if (body.id && body.type && (body.amount >=0)) {
             await Expense.findOne({
                 where: {
                     id_expense: body.id
@@ -97,7 +98,7 @@ export async function deleteExpense(req, res) {
                 message: "Error, invalid token"
             });
         }
-        const idExpense = req.body.id
+        const idExpense = req.params.id
         if (idExpense) {
             await Expense.findOne({
                 where: {
@@ -130,6 +131,34 @@ export async function deleteExpense(req, res) {
         }
     })
 };
+
+export async function getOneExpense(req, res) {
+    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+      if (error) {
+        return res.status(500).json({
+          message: "Error, invalid token",
+        });
+      }
+      const params = req.params;
+      await Expense.findByPk(params.id)
+        .then((expense) => {
+          if (expense) {
+            return res.status(200).json({
+              expense,
+            });
+          } else {
+            return res.status(500).json({
+              message: "Error, expense not exist",
+            });
+          }
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            message: "Error, expense not exist",
+          });
+        });
+    });
+  }
 
 export async function getAllExpenses(req, res) {
     jwt.verify(req.token, process.env.keyToken, async (error, user) => {

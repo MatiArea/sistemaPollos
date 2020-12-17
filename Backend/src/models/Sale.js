@@ -1,4 +1,7 @@
 import Sequelize from 'sequelize';
+import Client from '../models/Client';
+import Product from '../models/Product';
+import ProductSale from '../models/ProductSale'
 import { sequelize } from "../BaseDeDatos/database";
 
 
@@ -28,5 +31,14 @@ const Sale = sequelize.define(
         timestamps: false,
     }
 );
+
+
+//Relations
+
+Client.hasMany(Sale,{ foreignKey: "id_client"});
+Sale.belongsTo(Client, { foreignKey: "id_client"});
+
+Sale.belongsToMany(Product,{ through: ProductSale })
+Product.belongsToMany(Sale,{ through: ProductSale })
 
 export default Sale; 
