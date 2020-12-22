@@ -1,5 +1,6 @@
 import Purchase from "../models/Purchase";
 import Product from "../models/Product";
+import Cash from "../models/Cash"
 const jwt = require("jsonwebtoken");
 
 export async function createPurchase(req, res) {
@@ -15,8 +16,8 @@ export async function createPurchase(req, res) {
         body.idProduct &&
         body.number &&
         body.date &&
-        (body.price >= 0) &&
-        (body.quantity >=0)
+        body.price >= 0 &&
+        body.quantity >= 0
       ) {
         const purchase = {
           date: body.date,
@@ -26,10 +27,23 @@ export async function createPurchase(req, res) {
           id_product: body.idProduct,
         };
         await Product.findByPk(purchase.id_product).then(async (product) => {
+          let arrayPrice = [];
+
+          product.cost_price.forEach((element) => {
+            arrayPrice.push(element);
+          });
+
+          let newPrice = {
+            quantity: purchase.quantity,
+            price: purchase.price,
+          };
+
+          arrayPrice.push(newPrice);
           product
             .update(
               {
                 stock: product.stock + purchase.quantity,
+                cost_price: arrayPrice,
               },
               {
                 where: {
@@ -40,11 +54,17 @@ export async function createPurchase(req, res) {
             .then(async (productUpdate) => {
               await Purchase.create(purchase)
                 .then(async (data) => {
-                  return res.status(200).json({
-                    message: "Purchase created succeffully",
+                  await Cash.findOne().then((cash) => {
+                  cash.amount -= purchase.quantity * purchase.price 
+                    cash.save().then((cashSave) => {
+                      return res.status(200).json({
+                        message: "Purchase created succeffully",
+                      });
+                    });
                   });
                 })
                 .catch((error) => {
+                  console.log(error)
                   return res.status(500).json({
                     message: "Error, purchase not created",
                   });
@@ -102,7 +122,7 @@ export async function updatePurchase(req, res) {
         body.price &&
         body.quantity
       ) {
-        const purchase = {
+        const newPurchase = {
           date: body.date,
           number: body.number,
           quantity: body.quantity,
@@ -110,8 +130,28 @@ export async function updatePurchase(req, res) {
           id_product: body.idProduct,
         };
         await Purchase.findByPk(body.id).then(async (purchase) => {
+          if (
+            purchase.quantity != newPurchase.quantity ||
+            purchase.price != newPurchase.price
+          ) {
+            if (expenseUpdate.amount > body.amoun) {
+              await Cash.findOne().then((cash) => {
+                cash.amount +=
+                  expenseUpdate.amount -
+                  newPurchase.quantity * newPurchase.price;
+                cash.save().then();
+              });
+            } else {
+              await Cash.findOne().then((cash) => {
+                cash.amount -=
+                  newPurchase.quantity * newPurchase.price -
+                  expenseUpdate.amount;
+                cash.save().then();
+              });
+            }
+          }
           purchase
-            .update(purchase, {
+            .update(newPurchase, {
               where: {
                 id_purchase: body.id,
               },
@@ -193,19 +233,32 @@ export async function deletePurchase(req, res) {
                     }
                   )
                   .then(async (data) => {
-                    await purchase.destroy().then((purchaseDeleted) => {
-                      if (purchaseDeleted) {
-                        return res.status(200).json({
-                          message: "Purchase deleted succeffully",
+                    await Cash.findOne()
+                      .then((cash) => {
+                        cash.amount += purchase.quantity * purchase.price;
+                        cash.save().then(async (cashSave) => {
+                          await purchase.destroy().then((purchaseDeleted) => {
+                            if (purchaseDeleted) {
+                              return res.status(200).json({
+                                message: "Purchase deleted succeffully",
+                              });
+                            } else {
+                              return res.status(500).json({
+                                message: "Error, Purchase not exist",
+                              });
+                            }
+                          });
                         });
-                      } else {
+                      })
+                      .catch((error) => {
                         return res.status(500).json({
-                          message: "Error, Purchase not exist",
+                          message: "Error, expense not deleted",
+                          error,
                         });
-                      }
-                    });
+                      });
                   });
-              });
+              }
+            );
           } else {
             return res.status(500).json({
               message: "Error, Purchase not exist",
@@ -251,7 +304,7 @@ export async function getOnePurchases(req, res) {
     }
     const params = req.params;
     if (params.idPurchase) {
-      await Purchase.findByPk(params, idPurchase, {
+      await Purchase.findByPk(params.idPurchase, {
         include: [Product],
       })
         .then((purchase) => {

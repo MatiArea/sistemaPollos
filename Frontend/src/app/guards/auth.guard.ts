@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwt_decode from "jwt-decode";
 
@@ -7,12 +7,19 @@ import jwt_decode from "jwt-decode";
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  canActivate():boolean {
-    var token = sessionStorage.getItem('token');
-    var token_decode = jwt_decode(token);
-    if(token_decode['admin'] == true){
+
+  constructor(private router: Router) { }
+
+  canActivate(): boolean {
+
+    if (sessionStorage.getItem('token') === null) {
+
+      this.router.navigate(['login']);
+      return false;
+
+    } else {
       return true;
     }
   }
-  
+
 }

@@ -10,6 +10,7 @@ import productRouter from "./routes/product";
 import purchaseRouter from "./routes/purchase";
 import movementRouter from "./routes/movement";
 import saleRouter from "./routes/sale"
+import cashRouter from "./routes/cash"
 
 // initialization
 const app = express();
@@ -36,7 +37,9 @@ app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/purchase", purchaseRouter);
 app.use("/movement", movementRouter);
-app.use("/sale",saleRouter)
+app.use("/sale",saleRouter);
+app.use("/cash",cashRouter);
+
 
 
 export default app;

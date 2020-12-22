@@ -40,7 +40,6 @@ export class PurchaseComponent implements OnInit {
     this.purchases = []
     this.purchaseService.getAllPurchase().subscribe(data =>{
       this.purchases = data['purchases']
-      console.log(this.purchases)
     })
 
   }
@@ -73,6 +72,7 @@ export class PurchaseComponent implements OnInit {
       this.getAllPurchase();
 
     },(error)=>{
+      console.log(error)
       if(error){
         this.toastr.error('No se pude crear la compra', 'Error!', {
           closeButton: true,

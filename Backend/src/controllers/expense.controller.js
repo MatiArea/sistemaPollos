@@ -1,4 +1,6 @@
 import Expense from '../models/Expense';
+import Cash from '../models/Cash';
+
 const jwt = require('jsonwebtoken');
 
 export async function createExpense(req, res) {
@@ -19,12 +21,17 @@ export async function createExpense(req, res) {
                     amount: body.amount,
                     description: body.description
                 }
-                await Expense.create(expense).then(expense => {
-                    return res.status(200).json({
-                        message: "Expenses created succeffully"
+                await Expense.create(expense).then(async (newExpense) => {
+                    await Cash.findOne().then( cash => {
+                        cash.amount -= expense.amount
+                        cash.save().then( cashSave => {
+                            return res.status(200).json({
+                                message: "Expenses created succeffully"
+                            })
+                        })
                     })
                 }).catch(error => {
-                    console.log(error,"1")
+                    console.log(error)
                     return res.status(500).json({
                         message: "Error, expense not created",
                         error
@@ -32,14 +39,12 @@ export async function createExpense(req, res) {
                 })
             }
             else {
-                console.log("2")
                 return res.status(500).json({
                     message: "Error, expense not created"
                 })
             }
         }
         else {
-            console.log("3")
             return res.status(500).json({
                 message: "Error, expense not created"
             })
@@ -62,6 +67,20 @@ export async function updateExpense(req, res) {
                 }
             }).then(async expenseUpdate => {
                 if (expenseUpdate) {
+                    if(expenseUpdate.amount != body.amount){
+                        if(expenseUpdate.amount > body.amount){
+                            await Cash.findOne().then( cash => {
+                                cash.amount += (expenseUpdate.amount - body.amount)
+                                cash.save().then()
+                            })
+                        }
+                        else{
+                            await Cash.findOne().then( cash => {
+                                cash.amount -= (body.amount - expenseUpdate.amount)
+                                cash.save().then()
+                            })
+                        }
+                    }
                     expenseUpdate.type = body.type;
                     expenseUpdate.amount = body.amount;
                     expenseUpdate.description = body.description
@@ -106,11 +125,23 @@ export async function deleteExpense(req, res) {
                 }
             }).then(async expense => {
                 if (expense) {
-                    await expense.destroy().then(data => {
-                        return res.status(200).json({
-                            message: "Expense deleted succesffully"
+                    await Cash.findOne().then( cash => {
+                        cash.amount += expense.amount
+                        cash.save().then( async(cashSave) => {
+                            await expense.destroy().then(data => {
+                                return res.status(200).json({
+                                    message: "Expense deleted succesffully"
+                                })
+                            })
+                            .catch(error => {
+                                return res.status(500).json({
+                                    message: "Error, expense not deleted",
+                                    error
+                                })
+                            })
                         })
-                    }).catch(error => {
+                    })
+                    .catch(error => {
                         return res.status(500).json({
                             message: "Error, expense not deleted",
                             error

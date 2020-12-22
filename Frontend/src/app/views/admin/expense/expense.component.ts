@@ -54,7 +54,6 @@ export class ExpenseComponent implements OnInit {
     }else{
       this.viewType = 2
     }
-    console.log(this.viewType)
     this.viewExpense = expense
     this.viewExpenseModal.show()
   }
@@ -71,7 +70,6 @@ export class ExpenseComponent implements OnInit {
         closeButton: true,
         progressBar: true
       });
-      console.log(createForm)
       createForm.reset();
       this.newExpenseModal.hide();      
       this.getAllExpense();

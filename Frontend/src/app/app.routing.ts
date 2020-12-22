@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
+
 
 import { P404Component } from './shared/error/404.component';
 import { P500Component } from './shared/error/500.component';
@@ -53,11 +55,12 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./shared/dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./shared/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'admin',
-        loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule)
+        loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule),
+        canActivate: [ AuthGuard ]
       },
       {
         path: 'general',

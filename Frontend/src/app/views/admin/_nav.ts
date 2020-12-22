@@ -43,6 +43,11 @@ export const navItems: INavData[] = [
     icon: 'icon-credit-card'
   },
   {
+    name: 'Caja',
+    url: '/admin/caja',
+    icon: 'icon-credit-card'
+  },
+  {
     name: 'Informes',
     url: '/admin/informes',
     icon: 'icon-chart',

@@ -1,0 +1,191 @@
+<div class="col-sm-12 col-lg-6 d-flex align-items-start">
+  <div class="card text-white bg-warning col-4">
+    <div class="card-body p-2">
+      <div class="text-value">$ {{ valueCash }}</div>
+      <div>Saldo actual</div>
+    </div>
+  </div>
+  <div class="col-4 d-flex align-items-center">
+    <button
+      type="button"
+      class="btn btn-block btn-primary .btn-large active"
+      (click)="updateModal.show()"
+    >
+      Actualizar caja
+    </button>
+  </div>
+</div>
+<div>
+  <div class="card card-accent-primary">
+    <div class="card-header">Conteo de billetes</div>
+    <div class="card-body">
+      <form #cashForm="ngForm" (submit)="cierre(cashForm)">
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 10</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant10"
+              name="cant10"
+            />
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 20</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant20"
+              name="cant20"
+            />
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 50</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant50"
+              name="cant50"
+            />
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 100</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant100"
+              name="cant100"
+            />
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 500</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant500"
+              name="cant500"
+            />
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="input-group col-md-11">
+            <label class="col-md-3 col-form-label" for="total"
+              >Billetes de 1000</label
+            >
+            <span class="input-group-prepend"
+              ><span class="input-group-text"
+                ><i class="fa fa-usd"></i></span></span
+            ><input
+              type="number"
+              class="form-control"
+              id="cant1000"
+              name="cant1000"
+            />
+          </div>
+        </fieldset>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Cierre de caja</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!----------------UPDATE VALUE MODAL---------------->
+
+<div
+  bsModal
+  #updateModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Actualizar Caja</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="updateModal.hide()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form
+        (submit)="updateCashValue(createForm)"
+        #createForm="ngForm"
+        id="createForm"
+      >
+        <div class="modal-body">
+          <div>
+            <fieldset class="form-group">
+              <div class="input-group col-md-11">
+                <label class="col-md-3 col-form-label" for="total"
+                  >Nuevo Monto</label
+                >
+                <span class="input-group-prepend"
+                  ><span class="input-group-text"
+                    ><i class="fa fa-usd"></i></span></span
+                ><input
+                  type="number"
+                  class="form-control"
+                  id="total"
+                  name="total"
+                  [(ngModel)]="value"
+                  placeholder="Monto"
+                />
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="updateModal.hide()"
+          >
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-success">Actualizar caja</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

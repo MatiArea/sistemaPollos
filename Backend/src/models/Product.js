@@ -1,15 +1,13 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../BaseDeDatos/database";
 
-
-
 const Product = sequelize.define(
   "product",
   {
     id_product: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement:true,
+      autoIncrement: true,
       allowNull: false,
     },
     code: {

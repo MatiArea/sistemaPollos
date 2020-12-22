@@ -38,7 +38,6 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(createForm:any){
-    console.log('pepe')
     this.productoService.createProduct(this.product).subscribe( data => {
       
       this.toastr.success('Producto creado con exito', 'Exito!', {
