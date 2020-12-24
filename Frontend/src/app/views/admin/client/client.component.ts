@@ -4,6 +4,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Client } from '../../../models/client.model';
 import { ClientService } from '../../../services/client.service';
+import { saveAs } from "file-saver"
+// const FileSaver = require('file-saver');
 
 @Component({
   selector: 'app-client',
@@ -102,6 +104,13 @@ export class ClientComponent implements OnInit {
       }
     })
   }
+
+  downloadPdf(){
+    this.clientService.createPDF().subscribe(response => {
+      console.log(response);
+      saveAs(response, `ListaClientes.pdf`);
+    });
+  } 
 
 
 }

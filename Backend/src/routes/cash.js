@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 
 import { validateToken } from "../middlewares/auth";
-import { createCash, getCash, updateCash } from "../controllers/cash.controller";
+import { createCash, getCash, updateCash, validateCash } from "../controllers/cash.controller";
 
 /*-----GET-----*/
 router.get('/',validateToken,getCash);
@@ -11,6 +11,7 @@ router.get('/',validateToken,getCash);
 
 /*-----POST-----*/
 router.post('/new',validateToken,createCash);
+router.post('/validate',validateToken,validateCash)
 
 /*-----PUT-----*/
 router.put('/update',validateToken,updateCash);

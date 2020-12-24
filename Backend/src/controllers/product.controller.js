@@ -137,7 +137,11 @@ export async function getAllProducts(req, res) {
                 message: "Error, invalid token"
             })
         }
-        await Product.findAll().then(products => {
+        await Product.findAll({
+            order: [
+                ['name', 'ASC'],
+            ],
+        }).then(products => {
             return res.status(200).json({
                 products
             })

@@ -1,111 +1,176 @@
-import Cash from '../models/Cash';
-const jwt = require('jsonwebtoken');
+import Cash from "../models/Cash";
+import Sale from "../models/Sale";
+const jwt = require("jsonwebtoken");
 
 export async function createCash(req, res) {
-    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
-        if (error) {
-            return res.status(500).json({
-                message: "Error, invalid token"
+  jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error, invalid token",
+      });
+    }
+    const body = req.body;
+    if (body) {
+      if (body.amount >= 0) {
+        const cash = {
+          amount: body.amount,
+        };
+        await Cash.create(cash)
+          .then((cash) => {
+            return res.status(200).json({
+              message: "Cash created succeffully",
             });
-        }
-        const body = req.body;
-        if (body) {
-            if (body.amount >=0) {
-                const cash = {
-                    amount:body.amount
-                }
-                await Cash.create(cash).then(cash => {
-                    return res.status(200).json({
-                        message: "Cash created succeffully"
-                    })
-                }).catch(error => {
-                    return res.status(500).json({
-                        message: "Error, cash not created",
-                        error
-                    })
-                })
-            }
-            else {
-                return res.status(500).json({
-                    message: "Error, cash not created"
-                })
-            }
-        }
-        else {
+          })
+          .catch((error) => {
             return res.status(500).json({
-                message: "Error, cash not created"
-            })
-        }
-    })
-};
-
-export async function updateCash(req, res) {
-    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
-        if (error) {
-            return res.status(500).json({
-                message: "Error, invalid token"
+              message: "Error, cash not created",
+              error,
             });
-        }
-        const body = req.body;
-        if (body) {
-            if (body.amount >=0) {
-                const newCash = {
-                    amount:body.amount
-                }
-                await Cash.findOne().then(async(cash) => {
-                    if(cash === null){
-                        await Cash.create(newCash).then(cash => {
-                            return res.status(200).json({
-                                message: "Cash created succeffully"
-                            })
-                        }).catch(error => {
-                            console.log(error)
-                            return res.status(500).json({
-                                message: "Error, cash not created",
-                                error
-                            })
-                        })
-                    }
-                    else {
-                        cash.amount = newCash.amount
-                        await cash.save().then(cash =>{
-                            return res.status(200).json({
-                                message: "Error, cash created succefully" 
-                            })
-                        })
-                        .catch(error =>{
-                            return res.status(500).json({
-                                message: "Error, cash not created"
-                            })
-                        })
-                    }
-                })      
-            }
-        }
-    })
+          });
+      } else {
+        return res.status(500).json({
+          message: "Error, cash not created",
+        });
+      }
+    } else {
+      return res.status(500).json({
+        message: "Error, cash not created",
+      });
+    }
+  });
 }
 
-export async function deleteCash(req, res) {
-    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
-        if (error) {
-            return res.status(500).json({
-                message: "Error, invalid token"
+export async function updateCash(req, res) {
+  jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error, invalid token",
+      });
+    }
+    const body = req.body;
+    if (body) {
+      if (body.amount >= 0) {
+        const newCash = {
+          amount: body.amount,
+        };
+        await Cash.findAll().then(async (cash) => {
+            if (cash.length === 0) {
+            await Cash.create({
+              amount: body.amount,
+              init: true,
+            })
+              .then(async (cash) => {
+                await Cash.create({
+                  amount: body.amount,
+                  init: false,
+                })
+                  .then(async (cash) => {
+                    return res.status(200).json({
+                      message: "Cash created succeffully",
+                    });
+                  })
+                  .catch((error) => {
+                    return res.status(500).json({
+                      message: "Error, cash not created",
+                      error,
+                    });
+                  });
+              })
+              .catch((error) => {
+                return res.status(500).json({
+                  message: "Error, cash not created",
+                  error,
+                });
+              });
+          } else {
+            cash.forEach(async (element) => {
+              element.amount = newCash.amount;
+              await element
+                .save()
+                .then()
+                .catch((error) => {
+                  return res.status(500).json({
+                    message: "Error, cash not created",
+                  });
+                });
             });
-        }
+            res.status(200).json({
+              message: "Cash updated succeffully",
+            });
+          }
+        });
+      }
+    }
+  });
+}
+
+export async function validateCash(req, res) {
+  jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error, invalid token",
+      });
+    }
+
+    const date = new Date().toISOString().split("T")[0];
+    await Sale.findAll({
+      where: {
+        date: date,
+      },
     })
-};
+      .then(async (sales) => {
+        await Purchase.findAll({
+          where: { date: date },
+        })
+          .then(async (purchases) => {
+            await Expense.findAll({
+              where: {
+                date: date,
+              },
+            })
+              .then(async (expenses) => {
+                await Movement.findAll({
+                  where: {
+                    date: date,
+                  },
+                })
+                  .then((movements) => {
+                    return res.status(200).json({
+                      sales,
+                      purchases,
+                      expenses,
+                      movements,
+                    });
+                  })
+                  .catch((error) => {
+                    res.status(500);
+                  });
+              })
+              .catch((error) => {
+                res.status(500);
+              });
+          })
+          .catch((error) => {
+            res.status(500);
+          });
+      })
+      .catch((error) => {
+        res.status(500);
+      });
+  });
+}
 
 export async function getCash(req, res) {
-    jwt.verify(req.token, process.env.keyToken, async (error, user) => {
-        if (error) {
-            return res.status(500).json({
-                message: "Error, invalid token"
-            });
-        }
-        await Cash.findOne().then(cash => {
-            return res.status(200).json({
-                cash
-            })
-        })
-    })
-};
+  jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error, invalid token",
+      });
+    }
+    await Cash.findAll().then((cash) => {
+      return res.status(200).json({
+        cash,
+      });
+    });
+  });
+}

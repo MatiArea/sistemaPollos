@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import Client from "../models/Client";
 import Product from "../models/Product";
+
 import ProductSale from "../models/ProductSale";
 import { sequelize } from "../BaseDeDatos/database";
 
@@ -18,7 +19,7 @@ const Sale = sequelize.define(
       allowNull: false,
     },
     date: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
       allowNull: false,
     },
     total: {
@@ -45,7 +46,7 @@ const Sale = sequelize.define(
 Client.hasMany(Sale, { foreignKey: "id_client" });
 Sale.belongsTo(Client, { foreignKey: "id_client" });
 
-Sale.belongsToMany(Product, { through: ProductSale });
-Product.belongsToMany(Sale, { through: ProductSale });
+Sale.belongsToMany(Product, { through: { model: ProductSale, unique: false } });
+Product.belongsToMany(Sale, { through:  { model: ProductSale, unique: false } });
 
 export default Sale;

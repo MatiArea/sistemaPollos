@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
 import { AuthGuard } from './guards/auth.guard';
-import { LoginGuard } from './guards/login.guard';
 
 
 import { P404Component } from './shared/error/404.component';
@@ -60,7 +59,7 @@ export const routes: Routes = [
       {
         path: 'admin',
         loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule),
-        canActivate: [ AuthGuard ]
+        canActivate: [AuthGuard ]
       },
       {
         path: 'general',

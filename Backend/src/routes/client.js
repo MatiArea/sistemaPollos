@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 
-import { createClient, deleteClient, getAllClients, getOneClient, updateBalance, updateClient } from '../controllers/client.controller'
+import { createClient, deleteClient, generateListPdf, getAllClients, getOneClient, updateBalance, updateClient } from '../controllers/client.controller'
 import { validateToken } from "../middlewares/auth";
 
 
@@ -11,6 +11,7 @@ router.get('/:id',validateToken,getOneClient);
 
 /*-----POST-----*/
 router.post('/new',validateToken,createClient);
+router.post('/downloadlist',validateToken,generateListPdf)
 
 /*-----PUT-----*/
 router.put('/update',validateToken,updateClient);

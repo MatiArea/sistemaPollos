@@ -2,7 +2,7 @@
   <div class="col-2">
     <button
       type="button"
-      class="btn btn-block btn-primary .btn-large active"
+      class="btn btn-block btn-success .btn-large active"
       (click)="openNewSaleModal()"
     >
       Agregar Venta
@@ -46,8 +46,16 @@
             <td class="text-center">${{ sale.total }}</td>
             <td class="text-center">${{ sale.payment }}</td>
             <td class="text-center">
-              <i class="fas fa-eye" (click)="getOneSale(sale.id_sale)"></i>
-              <i class="fas fa-trash-alt" (click)="daleteSale(sale.id_sale)"></i>
+              <i
+                class="fas fa-eye"
+                style="cursor: pointer"
+                (click)="getOneSale(sale.id_sale)"
+              ></i>
+              <i
+                class="fas fa-trash-alt"
+                style="cursor: pointer"
+                (click)="daleteSale(sale.id_sale)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -83,45 +91,48 @@
         #createForm="ngForm"
         id="createForm"
       >
-      <div class="modal-body">
-        <fieldset class="form-group">
-          <div class="input-group col-md-11">
-            <label class="col-md-3 col-form-label" for="number">Numero</label>
-            <span class="input-group-prepend"
-              ><span class="input-group-text"
-                ><i class="fa fa-list-ol"></i></span></span
-            ><input
-              class="form-control ng-untouched ng-pristine ng-valid"
-              type="number"
-              placeholder="Numero"
-              name="number"
-              [(ngModel)]="sale.number"
-            />
-          </div>
-        </fieldset>
-        <fieldset class="form-group">
-          <div class="input-group col-md-11">
-            <label class="col-md-3 col-form-label" for="date">Fecha</label>
-            <span class="input-group-prepend"
-              ><span class="input-group-text"
-                ><i class="fa fa-calendar"></i></span></span
-            ><input
-              class="form-control ng-untouched ng-pristine ng-valid"
-              id="date"
-              type="date"
-              [(ngModel)]="sale.date"
-              name="date"
-            />
-          </div>
-        </fieldset>
-        <fieldset class="form-group">
-          <div class="input-group col-md-11">
-            <label class="col-md-3 col-form-label" for="searchClient"
-              >Cliente</label>
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa fa-search"></i></span>
+        <div class="modal-body">
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="number">Numero</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-list-ol"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                placeholder="Numero"
+                name="number"
+                [(ngModel)]="sale.number"
+              />
             </div>
-            <select
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="date">Fecha</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-calendar"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                id="date"
+                type="date"
+                [(ngModel)]="sale.date"
+                name="date"
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="searchClient"
+                >Cliente</label
+              >
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fa fa-search"></i
+                ></span>
+              </div>
+              <select
                 id="Client"
                 name="client"
                 class="form-control"
@@ -135,24 +146,28 @@
                   {{ client.name }}
                 </option>
               </select>
-          </div>
-        </fieldset>
-        <fieldset class="form-group">
-          <form #addForm ="ngForm" (submit)="addItem(addForm)" id="addForm">
-            <div class="input-group col-md-11">
-              <label class="col-md-3 col-form-label" for="searchProduct"
-                >Producto</label
-              >
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fa fa-search"></i></span>
-              </div>
-              <select
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <form #addForm="ngForm" (submit)="addItem(addForm)" id="addForm">
+              <div class="input-group col-md-11">
+                <label class="col-md-3 col-form-label" for="searchProduct"
+                  >Producto</label
+                >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="fa fa-search"></i
+                  ></span>
+                </div>
+                <select
                   id="Product"
                   name="product"
                   class="form-control"
                   (change)="productSelected($event.target.value)"
                 >
-                  <option value="undefined" disabled selected>Seleccionar Producto</option>
+                  <option value="undefined" disabled selected>
+                    Seleccionar Producto
+                  </option>
                   <option
                     *ngFor="let product of products; index as indexProduct"
                     value="{{ indexProduct }}"
@@ -160,53 +175,63 @@
                     {{ product.name }}
                   </option>
                 </select>
-              <input
-                class="form-control ml-4"
-                type="number"
-                name="cantidad"
-                placeholder="Cantidad"
-                [(ngModel)]="quantity"
-              />
-              <div class="text-center ml-3">
-                <button type="submit" class="btn btn-block btn-success" ><i class="fa fa-plus"></i>
-                    Agregar</button>
+                <input
+                  class="form-control ml-4"
+                  type="number"
+                  name="cantidad"
+                  placeholder="Cantidad"
+                  [(ngModel)]="quantity"
+                />
+                <div class="text-center ml-3">
+                  <button type="submit" class="btn btn-block btn-success">
+                    <i class="fa fa-plus"></i> Agregar
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-        </fieldset>
-        <fieldset class="form-group">
-          <div class="col-lg-12 mt-2">
-            <div class="card">
+            </form>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-lg-12 mt-2">
+              <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Productos
+                  <i class="fa fa-align-justify"></i> Productos
                 </div>
                 <div class="card-body overflow-auto">
-                    <table class="table table-bordered ">
-                      <thead>
-                        <tr>
-                          <th class="text-center">Codigo</th>
-                          <th class="text-center">Nombre</th>
-                          <th class="text-center">Cantidad</th>
-                          <th class="text-center"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!---->
-                        <tr *ngFor="let item of items">
-                          <td class="text-center">{{ item.product.code }}</td>
-                          <td class="text-center">{{ item.product.name }}</td>
-                          <td class="text-center">{{ item.quantity }}</td>
-                          <td class="text-center">
-                            <i class="fas fa-trash-alt" (click)="this.items.pop(item)"></i>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Codigo</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Subtotal</th>
+                        <th class="text-center"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!---->
+                      <tr *ngFor="let item of items">
+                        <td class="text-center">{{ item.product.code }}</td>
+                        <td class="text-center">{{ item.product.name }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-center">
+                          $
+                          {{ item.quantity * item.product.sale_price }}
+                        </td>
+                        <td class="text-center">
+                          <i
+                            class="fas fa-trash"
+                            style="cursor: pointer"
+                            (click)="deleteItem(item)"
+                          ></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-          </div>
-        </fieldset>
-        <fieldset class="form-group d-flex justify-content-end">
+          </fieldset>
+          <fieldset class="form-group d-flex justify-content-end">
             <div class="input-group col-md-5">
               <span class="input-group-prepend"
                 ><span class="input-group-text"
@@ -219,35 +244,188 @@
                 name="payment"
               />
             </div>
-        </fieldset>
-        <fieldset class="form-group d-flex justify-content-end">
-          <div class="input-group col-md-5">
-            <span class="input-group-prepend"
-              ><span class="input-group-text"
-                ><i class="fa fa-usd"></i></span></span
-            ><input
-              class="form-control ng-untouched ng-pristine ng-valid"
-              type="number"
-              placeholder="Total"
-              [(ngModel)]="sale.total"
-              name="total"
-              disabled
-            />
-          </div>
-        </fieldset>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="newSaleModal.hide()"
-        >
-          Cancelar
-        </button>
-        <button type="submit" class="btn btn-success">Crear Venta</button>
-      </div>
+          </fieldset>
+          <fieldset class="form-group d-flex justify-content-end">
+            <div class="input-group col-md-5">
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-usd"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                placeholder="Total"
+                [(ngModel)]="sale.total"
+                name="total"
+                disabled
+              />
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="newSaleModal.hide()"
+          >
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-success">Crear Venta</button>
+        </div>
       </form>
     </div>
   </div>
-  
+</div>
+
+<!-- ------------VIEW SALE MODAL----------- -->
+<div
+  bsModal
+  #viewSaleModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Visualizar Venta</h4>
+        <button
+          type="button"
+          class="close"
+          (click)="viewSaleModal.hide()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #viewForm="ngForm" id="viewForm">
+        <div class="modal-body">
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="number">Numero</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-list-ol"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                placeholder="Numero"
+                name="number"
+                [(ngModel)]="saleView.number"
+                disabled
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="date">Fecha</label>
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-calendar"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="date"
+                [(ngModel)]="saleView.date"
+                name="date"
+                disabled
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="input-group col-md-11">
+              <label class="col-md-3 col-form-label" for="searchClient"
+                >Cliente</label
+              >
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fa fa-search"></i
+                ></span>
+              </div>
+              <input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="text"
+                [(ngModel)]="saleView.name_client"
+                name="name_client"
+                disabled
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group">
+            <div class="col-lg-12 mt-2">
+              <div class="card">
+                <div class="card-header">
+                  <i class="fa fa-align-justify"></i> Productos
+                </div>
+                <div class="card-body overflow-auto">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Codigo</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!---->
+                      <tr *ngFor="let item of saleView.items">
+                        <td class="text-center">{{ item.code }}</td>
+                        <td class="text-center">{{ item.name }}</td>
+                        <td class="text-center">
+                          {{ item.productsale.quantity }}
+                        </td>
+                        <td class="text-center">
+                          $ {{ item.productsale.quantity * item.sale_price }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="form-group d-flex justify-content-end">
+            <div class="input-group col-md-5">
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-usd"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                placeholder="Pago"
+                [(ngModel)]="saleView.payment"
+                name="payment"
+                disabled
+              />
+            </div>
+          </fieldset>
+          <fieldset class="form-group d-flex justify-content-end">
+            <div class="input-group col-md-5">
+              <span class="input-group-prepend"
+                ><span class="input-group-text"
+                  ><i class="fa fa-usd"></i></span></span
+              ><input
+                class="form-control ng-untouched ng-pristine ng-valid"
+                type="number"
+                placeholder="Total"
+                [(ngModel)]="saleView.total"
+                name="total"
+                disabled
+              />
+            </div>
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="viewSaleModal.hide()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

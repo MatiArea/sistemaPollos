@@ -12,6 +12,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { MovementComponent } from './movement/movement.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { CashComponent } from './cash/cash.component';
+import { ReportComponent } from './report/report.component';
 
 
 
@@ -24,7 +25,8 @@ import { CashComponent } from './cash/cash.component';
     PurchaseComponent,
     MovementComponent,
     ExpenseComponent,
-    CashComponent
+    CashComponent,
+    ReportComponent
   ],
   imports: [
     CommonModule,

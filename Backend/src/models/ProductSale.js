@@ -1,5 +1,8 @@
 import { Sequelize } from "sequelize";
 import { sequelize } from "../BaseDeDatos/database";
+import Product from "../models/Product";
+import Sale from "./Sale";
+
 
 const ProductSale = sequelize.define(
   "productsale",
@@ -18,10 +21,10 @@ const ProductSale = sequelize.define(
       type: Sequelize.FLOAT,
       allowNull: false,
     },
-    sale_price:{
+    sale_price: {
       type: Sequelize.FLOAT,
       allowNull: false,
-    }
+    },
   },
   {
     freezeTableName: true,

@@ -1,6 +1,6 @@
 import Purchase from "../models/Purchase";
 import Product from "../models/Product";
-import Cash from "../models/Cash"
+import Cash from "../models/Cash";
 const jwt = require("jsonwebtoken");
 
 export async function createPurchase(req, res) {
@@ -54,8 +54,12 @@ export async function createPurchase(req, res) {
             .then(async (productUpdate) => {
               await Purchase.create(purchase)
                 .then(async (data) => {
-                  await Cash.findOne().then((cash) => {
-                  cash.amount -= purchase.quantity * purchase.price 
+                  await Cash.findOne({
+                    where: {
+                      init: false,
+                    },
+                  }).then((cash) => {
+                    cash.amount -= purchase.quantity * purchase.price;
                     cash.save().then((cashSave) => {
                       return res.status(200).json({
                         message: "Purchase created succeffully",
@@ -64,7 +68,7 @@ export async function createPurchase(req, res) {
                   });
                 })
                 .catch((error) => {
-                  console.log(error)
+                  console.log(error);
                   return res.status(500).json({
                     message: "Error, purchase not created",
                   });
@@ -287,6 +291,9 @@ export async function getAllPurchases(req, res) {
     }
     await Purchase.findAll({
       include: [Product],
+      order: [
+        ['date', 'DESC'],
+    ],
     }).then((purchases) => {
       return res.status(200).json({
         purchases,

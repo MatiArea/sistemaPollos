@@ -1,6 +1,6 @@
 import Movement from "../models/Movement";
 import Client from "../models/Client";
-import { updateBalance } from "./client.controller";
+import Cash from "../models/Cash";
 const jwt = require("jsonwebtoken");
 
 export async function createMovement(req, res) {
@@ -18,17 +18,32 @@ export async function createMovement(req, res) {
           amount: body.total,
           id_client: body.id_client,
         };
-        await Movement.create(newMovement)
-          .then(async (newMovement) => {
-            return res.status(200).json({
-              message: "Movement created succesffully",
+        await Cash.findOne({
+          where: {
+            init: false,
+          },
+        }).then((cashUpdate) => {
+          if (cashUpdate) {
+            cashUpdate.amount += newMovement.amount;
+            cashUpdate.save().then(async (cashSave) => {
+              await Movement.create(newMovement)
+                .then(async (movement) => {
+                  return res.status(200).json({
+                    message: "Movement created succesffully",
+                  });
+                })
+                .catch((error) => {
+                  return res.status(500).json({
+                    message: "Error, movement not created",
+                  });
+                });
             });
-          })
-          .catch((error) => {
+          } else {
             return res.status(500).json({
               message: "Error, movement not created",
             });
-          });
+          }
+        });
       } else {
         return res.status(500).json({
           message: "Error, movement not created",
@@ -55,8 +70,10 @@ export async function deleteMovement(req, res) {
     }
     const params = req.params;
     if (params && params.id) {
-      await Movement.findByPk(params.id)
-        .then((movement) => {
+      await Movement.findByPk(params.id, {
+        include: [client],
+      })
+        .then(async (movement) => {
           if (movement) {
             movement.destroy().then((movementDeleted) => {
               if (movementDeleted) {
@@ -123,7 +140,10 @@ export async function getAllMovements(req, res) {
         message: "Error, invalid token",
       });
     }
-    await Movement.findAll({ include: { model: Client } }).then((movements) => {
+    await Movement.findAll({
+      include: { model: Client },
+      order: [["date", "DESC"]],
+    }).then((movements) => {
       return res.status(200).json({
         movements,
       });

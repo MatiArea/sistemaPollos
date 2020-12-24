@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, ɵConsole } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { Client } from '../models/client.model';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Client } from '../models/client.model';
 })
 export class ClientService {
 
-  url:string
+  url: string
 
   constructor(private http: HttpClient) {
     this.url = 'http://127.0.0.1:4000';
@@ -26,7 +27,7 @@ export class ClientService {
     });
   }
 
-  createClient(client:Client){
+  createClient(client: Client) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -35,16 +36,16 @@ export class ClientService {
     })
 
     const body = {
-      name:client.name,
-      address:client.address,
+      name: client.name,
+      address: client.address,
     }
 
-    return this.http.post(`${this.url}/client/new`,body,{ headers }).pipe(data => {
+    return this.http.post(`${this.url}/client/new`, body, { headers }).pipe(data => {
       return data
     });
   }
 
-  getOneClient(id_client:number) {
+  getOneClient(id_client: number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -57,7 +58,7 @@ export class ClientService {
     });
   }
 
-  editClient(client:Client) {
+  editClient(client: Client) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -66,18 +67,18 @@ export class ClientService {
     })
 
     const body = {
-      id:client.id_client,
-      name:client.name,
-      address:client.address,
-      balance:client.balance
+      id: client.id_client,
+      name: client.name,
+      address: client.address,
+      balance: client.balance
     }
 
-    return this.http.put(`${this.url}/client/update`,body,{ headers }).pipe(data => {
+    return this.http.put(`${this.url}/client/update`, body, { headers }).pipe(data => {
       return data
     });
   }
 
-  deleteClient(id_client:number) {
+  deleteClient(id_client: number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -90,7 +91,7 @@ export class ClientService {
     });
   }
 
-  updateBalance(id_client:number,amount:number){
+  updateBalance(id_client: number, amount: number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -99,13 +100,27 @@ export class ClientService {
     })
 
     const body = {
-      idClient:id_client,
+      idClient: id_client,
       amount
     }
 
-    return this.http.put(`${this.url}/client/updatebalance`,body,{headers}).pipe(data => {
+    return this.http.put(`${this.url}/client/updatebalance`, body, { headers }).pipe(data => {
       return data
     })
+  }
+
+  createPDF() {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString,
+      'Accept':'application/pdf'
+    })
+
+    return this.http.post(`${this.url}/client/downloadlist`, {}, { headers, responseType: 'blob' }).pipe(map((data) => {
+      return data
+    }));
   }
 
 }

@@ -1,12 +1,26 @@
 <div class="container-fluid">
-  <div class="col-2">
-    <button
-      type="button"
-      class="btn btn-block btn-primary .btn-large active"
-      (click)="newClientModal.show()"
-    >
-      Agregar Cliente
-    </button>
+  <div class="col-sm-12 col-lg-3 d-flex align-items-start">
+    <div class="m-auto">
+      <button
+      style="height: 43px;"
+        type="button"
+        class="btn btn-block btn-success active"
+        (click)="newClientModal.show()"
+      >
+        Agregar Cliente
+      </button>
+    </div>
+    <div >
+      <div class="m-auto">
+        <button
+          (click)="downloadPdf()"
+          type="button"
+          class="btn btn-lg btn-primary"
+        >
+          <i class="fas fa-file-pdf"></i> Descargar lista clientes
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="card mt-2">
@@ -42,12 +56,16 @@
             <td class="text-center">{{ client.address }}</td>
             <td class="text-center">${{ client.balance }}</td>
             <td class="text-center">
-              <i class="fas fa-pen" 
-              style="cursor: pointer"
-              (click)="getOneClient(client)"></i>
-              <i class="fas fa-trash-alt"
-              style="cursor: pointer"
-              (click)="deleteClient(client)"></i>
+              <i
+                class="fas fa-pen"
+                style="cursor: pointer"
+                (click)="getOneClient(client)"
+              ></i>
+              <i
+                class="fas fa-trash-alt"
+                style="cursor: pointer"
+                (click)="deleteClient(client)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -80,7 +98,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form (submit)="createClient(createForm)" #createForm="ngForm" id="createForm">
+      <form
+        (submit)="createClient(createForm)"
+        #createForm="ngForm"
+        id="createForm"
+      >
         <div class="modal-body">
           <div>
             <div class="row">
@@ -125,7 +147,13 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success" [disabled]="!createForm.valid">Crear cliente</button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!createForm.valid"
+          >
+            Crear cliente
+          </button>
         </div>
       </form>
     </div>
@@ -216,10 +244,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success" [disabled]="!editForm.valid">Actualizar cliente</button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!editForm.valid"
+          >
+            Actualizar cliente
+          </button>
         </div>
       </form>
     </div>
   </div>
-  
 </div>

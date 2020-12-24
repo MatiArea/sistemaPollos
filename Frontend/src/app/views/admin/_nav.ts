@@ -13,12 +13,12 @@ export const navItems: INavData[] = [
   {
     name: 'Compras',
     url: '/admin/compras',
-    icon: 'icon-credit-card'
+    icon: 'fas fa-credit-card'
   },
   {
     name: 'Clientes',
     url: '/admin/clientes',
-    icon: 'icon-people',
+    icon: 'fas fa-user-friends',
     children: [
       {
         name: 'Listado',
@@ -35,26 +35,26 @@ export const navItems: INavData[] = [
   {
     name: 'Productos',
     url: '/admin/productos',
-    icon: 'icon-basket-loaded'
+    icon: 'fas fa-shopping-cart'
   },
   {
     name: 'Gastos',
     url: '/admin/gastos',
-    icon: 'icon-credit-card'
+    icon: 'fas fa-credit-card'
   },
   {
     name: 'Caja',
     url: '/admin/caja',
-    icon: 'icon-credit-card'
+    icon: 'fas fa-cash-register'
   },
   {
     name: 'Informes',
     url: '/admin/informes',
-    icon: 'icon-chart',
+    icon: 'fas fa-chart-pie',
     children: [
       {
         name: 'Diario',
-        url: '/admin/diario',
+        url: '/admin/informes/diario',
         icon: 'icon-star'
       },
       {

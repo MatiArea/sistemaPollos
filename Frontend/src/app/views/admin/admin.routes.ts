@@ -10,6 +10,7 @@ import { PurchaseComponent } from './purchase/purchase.component'
 import { MovementComponent } from './movement/movement.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { CashComponent } from './cash/cash.component';
+import { ReportComponent } from './report/report.component';
 
 
 export const routes: Routes = [
@@ -72,10 +73,16 @@ export const routes: Routes = [
   },
   {
     path: 'informes',
-    component: ProductComponent,
     data: {
       title: 'Register Page'
-    }
+    },
+    children:[{
+      path: 'diario',
+      component: ReportComponent,
+      data: {
+        title: 'Clientes / ReporteDiario'
+      }}
+    ]
   },
 ];
 

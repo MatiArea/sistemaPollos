@@ -2,6 +2,7 @@ import Sale from "../models/Sale";
 import Product from "../models/Product";
 import Client from "../models/Client";
 import Cash from "../models/Cash";
+import ProductSale from "../models/ProductSale";
 const jwt = require("jsonwebtoken");
 
 export async function createSale(req, res) {
@@ -36,7 +37,6 @@ export async function createSale(req, res) {
                 product.cost_price.forEach((element) => {
                   arrayCost.push(element);
                 });
-                product.stock -= quantity;
                 while (quantity > 0) {
                   let costPrice = arrayCost[0].price;
                   let quantityStock = arrayCost[0].quantity;
@@ -50,7 +50,6 @@ export async function createSale(req, res) {
                       },
                     });
                   } else {
-                    console.log(costPrice)
                     newSale.addProduct(product, {
                       through: {
                         quantity: quantity,
@@ -62,6 +61,7 @@ export async function createSale(req, res) {
                   }
                   quantity -= quantityStock;
                 }
+                product.stock -= item.quantity;
                 product.cost_price = [];
                 arrayCost.forEach((element) => {
                   product.cost_price.push(element);
@@ -69,7 +69,11 @@ export async function createSale(req, res) {
                 product.save().then();
               });
             });
-            await Cash.findOne().then((cashUpdate) => {
+            await Cash.findOne({
+              where: {
+                init: false,
+              },
+            }).then((cashUpdate) => {
               if (cashUpdate) {
                 cashUpdate.amount += sale.payment;
                 cashUpdate.save().then(async (cashSave) => {
@@ -127,24 +131,28 @@ export async function deleteSale(req, res) {
           await Cash.findOne().then((cash) => {
             if (cash) {
               cash.amount -= saleToDelete.payment;
-              cash.save().then(async(cashSave) => {
-                await Client.findByPk(saleToDelete.id_client).then(async(client) => {
-                  client.balance -= saleToDelete.total - saleToDelete.payment;
-                  client.save().then((clientModify) => {
-                    saleToDelete.destroy().then((saleDeleted) => {
-                      if (saleDeleted) {
-                        return res.status(200).json({
-                          message: "Sale deleted succefully",
+              cash.save().then(async (cashSave) => {
+                await Client.findByPk(saleToDelete.id_client).then(
+                  async (client) => {
+                    client.balance -= saleToDelete.total - saleToDelete.payment;
+                    client.save().then((clientModify) => {
+                      saleToDelete
+                        .destroy()
+                        .then((saleDeleted) => {
+                          if (saleDeleted) {
+                            return res.status(200).json({
+                              message: "Sale deleted succefully",
+                            });
+                          }
+                        })
+                        .catch((error) => {
+                          return res.status(500).json({
+                            message: "Error, sale not deleted",
+                          });
                         });
-                      }
-                    })
-                    .catch((error) => {
-                      return res.status(500).json({
-                        message: "Error, sale not deleted",
-                      });
                     });
-                  });
-                });
+                  }
+                );
               });
             }
           });
@@ -169,10 +177,18 @@ export async function getOneSale(req, res) {
         message: "Error, invalid token",
       });
     }
-    let body = req.body;
-    if (body) {
-      Sale.findByPk(body.idSale, {
-        include: [Client, Product],
+    let params = req.params;
+    console.log(params);
+    if (params) {
+      Sale.findByPk(params.id, {
+        include: [
+          { model: Client, attributes: ["name"] },
+          { model: Product, attributes: ["name", "sale_price", "code"] },
+        ],
+        through: {
+          model: ProductSale,
+          attributes: ["quantity"],
+        },
       })
         .then((sale) => {
           return res.status(200).json({
@@ -201,6 +217,9 @@ export async function getAllSales(req, res) {
     }
     Sale.findAll({
       include: [Client],
+      order: [
+        ['date', 'DESC'],
+    ],
     }).then((sales) => {
       return res.status(200).json({
         sales,

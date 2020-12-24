@@ -11,6 +11,10 @@ const Cash = sequelize.define(
             autoIncrement: true,
             allowNull : false,
         },
+        init:{
+            type: Sequelize.BOOLEAN,
+            allowNull:false
+        },
         amount : {
             type : Sequelize.FLOAT,
             allowNull : false,
