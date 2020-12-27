@@ -3,7 +3,6 @@ import ProductSale from "../models/ProductSale";
 import Sale from "../models/Sale";
 import Expense from "../models/Expense";
 import Movement from "../models/Movement";
-import Product from "../models/Product";
 import { sequelize } from "../BaseDeDatos/database";
 const Sequelize = require("sequelize");
 const op = Sequelize.Op;
@@ -162,11 +161,16 @@ export async function monthReport(req, res) {
       });
     }
     var month = req.params.month;
+    var year = new Date().getFullYear()
     await Sale.findAll({
       where: {
         andOp: sequelize.where(
           sequelize.fn("date_part", "month", sequelize.col("date")),
           month
+        ),
+        andOp: sequelize.where(
+          sequelize.fn("date_part", "year", sequelize.col("date")),
+          year
         ),
       },
       attributes: ["payment", "total"],
@@ -179,6 +183,10 @@ export async function monthReport(req, res) {
               sequelize.fn("date_part", "month", sequelize.col("date")),
               month
             ),
+            andOp: sequelize.where(
+              sequelize.fn("date_part", "year", sequelize.col("date")),
+              year
+            ),
           },
           attributes: ["amount"],
         })
@@ -189,6 +197,10 @@ export async function monthReport(req, res) {
                   sequelize.fn("date_part", "month", sequelize.col("date")),
                   month
                 ),
+                andOp: sequelize.where(
+                  sequelize.fn("date_part", "year", sequelize.col("date")),
+                  year
+                ),
               },
               attributes: ["amount"],
             })
@@ -198,6 +210,10 @@ export async function monthReport(req, res) {
                     andOp: sequelize.where(
                       sequelize.fn("date_part", "month", sequelize.col("date")),
                       month
+                    ),
+                    andOp: sequelize.where(
+                      sequelize.fn("date_part", "year", sequelize.col("date")),
+                      year
                     ),
                   },
                   attributes: ["quantity", "price"],

@@ -12,11 +12,9 @@ export async function createExpense(req, res) {
     }
     const body = req.body;
     if (body) {
-      console.log(body);
       if (body.type && body.amount >= 0 && body.description) {
-        const today = new Date();
         const expense = {
-          date: today,
+          date: body.date,
           type: body.type,
           amount: body.amount,
           description: body.description,
