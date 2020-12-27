@@ -3,7 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
+import { IsAdmin } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { IsGeneral } from './guards/general.guard';
+import { Unlogin } from './guards/unlogin.guard';
 
 
 import { P404Component } from './shared/error/404.component';
@@ -36,7 +39,8 @@ export const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Login Page'
-    }
+    },
+    canActivate:[ Unlogin ]
   },
   {
     path: 'register',
@@ -52,18 +56,19 @@ export const routes: Routes = [
       title: 'Home'
     },
     children: [
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./shared/dashboard/dashboard.module').then(m => m.DashboardModule),
-      },
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: () => import('./shared/dashboard/dashboard.module').then(m => m.DashboardModule),
+      // },
       {
         path: 'admin',
         loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule),
-        canActivate: [AuthGuard ]
+        canActivate: [AuthGuard, IsAdmin]
       },
       {
         path: 'general',
-        loadChildren: () => import('./views/admin/admin.module').then(m => m.AdminModule)
+        loadChildren: () => import('./views/general/general.module').then(m => m.GeneralModule),
+        canActivate: [AuthGuard, IsGeneral]
       },
     ],
   },

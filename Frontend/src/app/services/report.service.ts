@@ -6,21 +6,47 @@ import { Injectable } from '@angular/core';
 })
 export class ReportService {
 
-  url:string;
+  url: string;
 
-  constructor( private http:HttpClient) { 
+  constructor(private http: HttpClient) {
     this.url = 'http://127.0.0.1:4000';
   }
 
-  dayReport(){
+  dayReport(date: string) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
     const headers = new HttpHeaders({
-      'Authorization': tokenString
+      'Authorization': tokenString,
     })
-    
-    return this.http.get(`${this.url}/report/dayreport`, { headers }).pipe(data => {
+
+    return this.http.get(`${this.url}/report/dayreport/${date}`, { headers }).pipe(data => {
+      return data
+    });
+  }
+
+  weekReport(init: string,finish:string) {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString,
+    })
+
+    return this.http.get(`${this.url}/report/weekreport/${init}/${finish}`, { headers }).pipe(data => {
+      return data
+    });
+  }
+
+  monthReport(month: string) {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString,
+    })
+
+    return this.http.get(`${this.url}/report/monthreport/${month}`, { headers }).pipe(data => {
       return data
     });
   }

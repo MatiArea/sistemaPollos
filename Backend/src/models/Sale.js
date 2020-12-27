@@ -49,4 +49,9 @@ Sale.belongsTo(Client, { foreignKey: "id_client" });
 Sale.belongsToMany(Product, { through: { model: ProductSale, unique: false } });
 Product.belongsToMany(Sale, { through:  { model: ProductSale, unique: false } });
 
+ProductSale.belongsTo(Product);
+ProductSale.belongsTo(Sale);
+Product.hasMany(ProductSale);
+Sale.hasMany(ProductSale);
+
 export default Sale;

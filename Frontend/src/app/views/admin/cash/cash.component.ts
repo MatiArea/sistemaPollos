@@ -7,6 +7,7 @@ import { MovementService } from '../../../services/movement.service';
 import { PurchaseService } from '../../../services/purchase.service';
 import { SaleService } from '../../../services/sale.service';
 import { ExpenseService } from '../../../services/expense.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cash',
@@ -20,12 +21,12 @@ export class CashComponent implements OnInit {
   value: number
   cash: Cash
   total: number
-  difValue:number
+  difValue: number
   message: any
 
 
   constructor(private cashService: CashService,
-
+    private router:Router,
     private toastr: ToastrService) {
     this.cash = new Cash()
   }
@@ -40,7 +41,6 @@ export class CashComponent implements OnInit {
 
   getValueCash() {
     this.cashService.getValueCash().subscribe(cash => {
-      console.log(cash)
       if (cash['cash'].length === 0) {
         this.valueCash = 0
         this.valueCashInit = 0
@@ -64,6 +64,9 @@ export class CashComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude actualizar la caja', 'Error!', {
           closeButton: true,
           progressBar: true
@@ -76,7 +79,7 @@ export class CashComponent implements OnInit {
     this.cashService.getValueCash().subscribe(cash => {
       this.total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b500 * 500 + this.cash.b1000 * 1000
       if (cash['cash'][1].amount === this.total) {
-        this.cashService.changeValue(cash['cash'][1].amount).subscribe( data => {
+        this.cashService.changeValue(cash['cash'][1].amount).subscribe(data => {
           this.toastr.success('Caja validada con exito', 'Exito!', {
             closeButton: true,
             progressBar: true
@@ -86,6 +89,9 @@ export class CashComponent implements OnInit {
           this.cash = new Cash()
         }, (error) => {
           if (error) {
+            if (error.code === 403) {
+              this.router.navigate(['login']);
+            }
             this.toastr.error('No se pude validar la caja', 'Error!', {
               closeButton: true,
               progressBar: true
@@ -93,18 +99,21 @@ export class CashComponent implements OnInit {
           }
         })
       }
-      else{
+      else {
         this.difValue = cash['cash'][1].amount - this.total
-        if(this.difValue > 0 ){
+        if (this.difValue > 0) {
           this.message = `El sistema tiene cargado $ ${this.difValue} extras`
         }
-        else{
+        else {
           this.message = `Faltan cargar $ ${this.difValue} en el sistema`
         }
         this.errorModal.show()
       }
     }, (error) => {
       if (error) {
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude actualizar la caja', 'Error!', {
           closeButton: true,
           progressBar: true

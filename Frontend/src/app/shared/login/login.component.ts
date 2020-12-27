@@ -26,6 +26,11 @@ export class LoginComponent {
         var token_decode = jwt_decode(token);
         if (token_decode['admin'] == true) {
           this.router.navigate(['/admin']);
+        } else if (token_decode['admin'] == false) {
+          this.router.navigate(['/general']);
+        }
+        else {
+          this.router.navigate['login']
         }
       }, error => {
         this.toastr.warning('Usuario o contraseña incorrectos', 'Error!', {

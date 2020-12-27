@@ -19,8 +19,7 @@ export async function createAccount(req, res) {
                         const newUser = {
                             username: body.username,
                             password: hash,
-                            admin: true,
-                            first: true,
+                            admin: body.admin,
                         };
                         await Account.create(newUser)
                             .then((newUser) => {

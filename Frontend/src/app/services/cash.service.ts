@@ -21,7 +21,7 @@ export class CashService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/cash/`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/cash`, { headers }).pipe(data => {
       return data
     });
   }

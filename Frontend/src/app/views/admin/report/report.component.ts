@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
+import { each } from 'async'
+import { Report } from '../../../models/report.model';
 import { ReportService } from '../../../services/report.service';
-import { each } from 'async';
 
 @Component({
   selector: 'app-report',
@@ -8,41 +9,143 @@ import { each } from 'async';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements OnInit {
-  
-  totalSales:number
-  totalExpenses:number
-  totalPurchases:number
-  totalMovements:number
-  ganancia:number
 
-  constructor(private reportService:ReportService) { 
-    this.totalSales = 0
-    this.totalExpenses = 0
-    this.totalPurchases = 0
-    this.totalMovements = 0
+  public chartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public labels = ['Ventas', 'Pago de Clientes', 'Movimientos de Clientes', 'Compras', 'Gastos'];
+  public type = 'bar';
+  public legend = true;
+  public data = [];
+
+  total: Report
+  ganancia: number
+  reportSelect: string
+  day: string
+  init: string
+  finish: string
+  month: string
+  show:boolean
+  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+
+  constructor(private reportService: ReportService) {
+    this.total = new Report()
     this.ganancia = 0
   }
 
   ngOnInit(): void {
-    this.generateReport()
   }
 
-  generateReport(){
-    this.reportService.dayReport().subscribe(data=>{
+  reportSelected(number: string) {
+    this.show = false
+
+    this.reportSelect = number
+  }
+
+  monthSelected(number: string) {
+    this.month = number
+    this.generateMonthReport()
+  }
+
+  generateDayReport() {
+    this.show = true
+    // let dateSplit = this.day.split('/')
+    // const dateNow = dateSplit[2] + '-' + dateSplit[1] + '-' + dateSplit[0]
+
+    this.total = new Report()
+
+    this.reportService.dayReport(this.day).subscribe(data => {
       console.log(data)
-      each(data['sales'],(sale) => {
-        this.totalSales += sale.payment
+      each(data['sales'], (sale) => {
+        this.total.totalSales += sale.total
+        this.total.totalPayment += sale.payment
+        each(sale.productsales, (item) => {
+          this.total.totalCostProducts += item.quantity * item.cost_price
+        })
       });
-      each(data['movements'],(movement) => {
-        this.totalMovements += movement.amount
+      each(data['movements'], (movement) => {
+        this.total.totalMovements += movement.amount
       });
-      each(data['purchases'],(purchase) => {
-        this.totalPurchases += purchase.price * purchase.quantity
+      each(data['purchases'], (purchase) => {
+        this.total.totalPurchases += purchase.price * purchase.quantity
       });
-      each(data['expenses'],(expense) => {
-        this.totalExpenses += expense.amount
+      each(data['expenses'], (expense) => {
+        this.total.totalExpenses += expense.amount
       });
-      this.ganancia = this.totalSales + this.totalMovements - this.totalExpenses - this.totalPurchases
+      this.data = [
+        { data: [this.total.totalSales, this.total.totalPayment, this.total.totalMovements, this.total.totalPurchases, this.total.totalExpenses], label: 'Movimientos' }
+      ];
+
+      this.total.gananciaBruta = this.total.totalSales + this.total.totalMovements
+      this.total.gananciaNeta = this.total.totalPayment + this.total.totalMovements - this.total.totalCostProducts - this.total.totalExpenses - this.total.totalPurchases
+
+    })
+  }
+
+  generateWeekReport(){
+    this.show = true
+
+    this.total = new Report()
+
+    this.reportService.weekReport(this.init,this.finish).subscribe(data => {
+      each(data['sales'], (sale) => {
+        this.total.totalSales += sale.total
+        this.total.totalPayment += sale.payment
+        each(sale.productsales, (item) => {
+          this.total.totalCostProducts += item.quantity * item.cost_price
+        })
+      });
+      each(data['movements'], (movement) => {
+        this.total.totalMovements += movement.amount
+      });
+      each(data['purchases'], (purchase) => {
+        this.total.totalPurchases += purchase.price * purchase.quantity
+      });
+      each(data['expenses'], (expense) => {
+        this.total.totalExpenses += expense.amount
+      });
+      this.data = [
+        { data: [this.total.totalSales, this.total.totalPayment, this.total.totalMovements, this.total.totalPurchases, this.total.totalExpenses], label: 'Movimientos' }
+      ];
+
+      this.total.gananciaBruta = this.total.totalSales + this.total.totalMovements
+      this.total.gananciaNeta = this.total.totalPayment + this.total.totalMovements - this.total.totalCostProducts - this.total.totalExpenses - this.total.totalPurchases
+
+    })
+  }
+
+
+  generateMonthReport() {
+    this.show = true
+
+    this.total = new Report()
+
+    this.reportService.monthReport(this.month).subscribe(data => {
+      each(data['sales'], (sale) => {
+        this.total.totalSales += sale.total
+        this.total.totalPayment += sale.payment
+        each(sale.productsales, (item) => {
+          this.total.totalCostProducts += item.quantity * item.cost_price
+        })
+      });
+      each(data['movements'], (movement) => {
+        this.total.totalMovements += movement.amount
+      });
+      each(data['purchases'], (purchase) => {
+        this.total.totalPurchases += purchase.price * purchase.quantity
+      });
+      each(data['expenses'], (expense) => {
+        this.total.totalExpenses += expense.amount
+      });
+      this.data = [
+        { data: [this.total.totalSales, this.total.totalPayment, this.total.totalMovements, this.total.totalPurchases, this.total.totalExpenses], label: 'Movimientos' }
+      ];
+
+      this.total.gananciaBruta = this.total.totalSales + this.total.totalMovements
+      this.total.gananciaNeta = this.total.totalPayment + this.total.totalMovements - this.total.totalCostProducts - this.total.totalExpenses - this.total.totalPurchases
+
     })
   }
 

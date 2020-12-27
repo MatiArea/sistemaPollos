@@ -21,9 +21,9 @@ export class Unlogin implements CanActivate {
             var token_decode = jwt_decode(token);
             if (token_decode['admin'] === true) {
                 
-                this.router.navigate(['/admin'])
+                this.router.navigate(['admin'])
             }else{
-                this.router.navigate(['/general'])
+                this.router.navigate(['general'])
             }
         }
     }

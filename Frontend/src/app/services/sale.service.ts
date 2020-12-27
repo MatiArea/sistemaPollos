@@ -20,7 +20,7 @@ export class SaleService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/sale/`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/sale`, { headers }).pipe(data => {
       return data
     });
   }

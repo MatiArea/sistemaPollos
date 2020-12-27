@@ -46,6 +46,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ToastrModule } from 'ngx-toastr';
 import { AdminModule } from './views/admin/admin.module';
+import { GeneralModule } from './views/general/general.module';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { AdminModule } from './views/admin/admin.module';
     ChartsModule,
     FormsModule,
     AdminModule,
+    GeneralModule,
     HttpClientModule,
     ToastrModule.forRoot()
   ],

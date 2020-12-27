@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Sale } from '../../../models/sale.model';
@@ -24,7 +25,7 @@ export class SaleComponent implements OnInit {
   id_client: number
   saleView: SaleView
 
-  constructor(private saleService: SaleService, private productService: ProductService, private clientService: ClientService, private toastr: ToastrService) {
+  constructor(private saleService: SaleService, private router: Router, private productService: ProductService, private clientService: ClientService, private toastr: ToastrService) {
     this.sale = new Sale()
     this.saleView = new SaleView()
   }
@@ -61,7 +62,6 @@ export class SaleComponent implements OnInit {
   getOneSale(idSale: number) {
     this.saleView.items = []
     this.saleService.getOneSale(idSale).subscribe(sale => {
-      console.log(sale)
       this.saleView.number = sale['sale'].number
       this.saleView.date = sale['sale'].date.split('T')[0]
       this.saleView.name_client = sale['sale'].client.name
@@ -152,6 +152,9 @@ export class SaleComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude crear la venta', 'Error!', {
           closeButton: true,
           progressBar: true
@@ -171,6 +174,9 @@ export class SaleComponent implements OnInit {
 
       }, (error) => {
         if (error) {
+          if (error.code === 403) {
+            this.router.navigate(['login']);
+          }
           this.toastr.error('No se pude eliminar la venta', 'Error!', {
             closeButton: true,
             progressBar: true

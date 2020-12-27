@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Client } from '../../../models/client.model';
 import { ClientService } from '../../../services/client.service';
 import { saveAs } from "file-saver"
+import { Router } from '@angular/router';
 // const FileSaver = require('file-saver');
 
 @Component({
@@ -18,7 +19,7 @@ export class ClientComponent implements OnInit {
   clientToEdit:any;
   clients:any;
 
-  constructor(private clientService:ClientService, private toastr:ToastrService) { 
+  constructor(private clientService:ClientService,private router:Router,private toastr:ToastrService) { 
     this.client = new Client()
     this.clientToEdit = new Client()
   }
@@ -51,6 +52,9 @@ export class ClientComponent implements OnInit {
 
     },(error)=>{
       if(error){
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude crear el cliente', 'Error!', {
           closeButton: true,
           progressBar: true
@@ -80,6 +84,9 @@ export class ClientComponent implements OnInit {
 
     },(error)=>{
       if(error){
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude actualizar el cliente', 'Error!', {
           closeButton: true,
           progressBar: true
@@ -97,6 +104,9 @@ export class ClientComponent implements OnInit {
       this.getAllClients();
     }, (error) => {
       if(error){
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
         this.toastr.error('No se pude eliminar el Cliente', 'Error!', {
           closeButton: true,
           progressBar: true
@@ -107,7 +117,6 @@ export class ClientComponent implements OnInit {
 
   downloadPdf(){
     this.clientService.createPDF().subscribe(response => {
-      console.log(response);
       saveAs(response, `ListaClientes.pdf`);
     });
   } 

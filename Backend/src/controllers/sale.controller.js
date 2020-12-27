@@ -184,10 +184,11 @@ export async function getOneSale(req, res) {
         include: [
           { model: Client, attributes: ["name"] },
           { model: Product, attributes: ["name", "sale_price", "code"] },
+          { model: ProductSale}
         ],
         through: {
           model: ProductSale,
-          attributes: ["quantity"],
+          unique: false
         },
       })
         .then((sale) => {

@@ -20,7 +20,7 @@ export class IsAdmin implements CanActivate {
         if (token_decode['admin'] == true) {
             return true;
         } else {
-            this.router.navigate(['error']);
+            this.router.navigate(['login']);
             return false;
         }
     }

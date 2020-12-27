@@ -20,10 +20,6 @@ const Account = sequelize.define(
     admin: {
       type: Sequelize.BOOLEAN,
       allowNull: false
-    },
-    first: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false      
     }
   },
   {

@@ -15,17 +15,22 @@ import { ReportComponent } from './report/report.component';
 
 export const routes: Routes = [
   {
-    path:'ventas',
+    path: '',
+    redirectTo: 'ventas',
+    pathMatch: 'full',
+  },
+  {
+    path: 'ventas',
     component: SaleComponent,
     data: {
-      title:'Ventas'
+      title: 'Ventas'
     }
   },
   {
-    path:'compras',
+    path: 'compras',
     component: PurchaseComponent,
     data: {
-      title:'Compras'
+      title: 'Compras'
     }
   },
   {
@@ -58,10 +63,10 @@ export const routes: Routes = [
     }
   },
   {
-    path:'gastos',
+    path: 'gastos',
     component: ExpenseComponent,
-    data:{
-      title:'Gastos'
+    data: {
+      title: 'Gastos'
     }
   },
   {
@@ -73,21 +78,15 @@ export const routes: Routes = [
   },
   {
     path: 'informes',
+    component: ReportComponent,
     data: {
       title: 'Register Page'
-    },
-    children:[{
-      path: 'diario',
-      component: ReportComponent,
-      data: {
-        title: 'Clientes / ReporteDiario'
-      }}
-    ]
+    }
   },
 ];
 
 @NgModule({
-  imports: [ RouterModule.forChild(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class AdminRoutingModule {}
+export class AdminRoutingModule { }

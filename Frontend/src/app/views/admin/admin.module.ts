@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin.routes';
-import { DashboardModule } from '../../shared/dashboard/dashboard.module';
 import { ClientComponent } from './client/client.component';
 import { ProductComponent } from './product/product.component';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { MovementComponent } from './movement/movement.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { CashComponent } from './cash/cash.component';
 import { ReportComponent } from './report/report.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -25,14 +25,15 @@ import { ReportComponent } from './report/report.component';
     PurchaseComponent,
     MovementComponent,
     ExpenseComponent,
-    CashComponent,
-    ReportComponent
+    CashComponent,    
+    ReportComponent,
+    
   ],
   imports: [
     CommonModule,
-    DashboardModule,
     AdminRoutingModule,
     FormsModule,
+    ChartsModule,
     ModalModule.forRoot()
   ]
 })

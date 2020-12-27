@@ -1,10 +1,6 @@
 import { INavData } from '@coreui/angular';
 
-export const navItems: INavData[] = [
-  {
-    title: true,
-    name: 'Components'
-  },
+export const adminNavItems: INavData[] = [
   {
     name: 'Ventas',
     url: '/admin/ventas',
@@ -51,22 +47,5 @@ export const navItems: INavData[] = [
     name: 'Informes',
     url: '/admin/informes',
     icon: 'fas fa-chart-pie',
-    children: [
-      {
-        name: 'Diario',
-        url: '/admin/informes/diario',
-        icon: 'icon-star'
-      },
-      {
-        name: 'Semanal',
-        url: '/admin/semanal',
-        icon: 'icon-star'
-      },
-      {
-        name: 'Mensual',
-        url: '/admin/mensual',
-        icon: 'icon-star'
-      }
-    ]
   }
 ];
