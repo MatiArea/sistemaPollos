@@ -2,16 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, ɵConsole } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Client } from '../models/client.model';
+import { Url } from '../models/url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  url: string
+  url: string = Url
 
   constructor(private http: HttpClient) {
-    this.url = 'http://127.0.0.1:4000';
   }
 
   getAllClients() {

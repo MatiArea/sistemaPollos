@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Product } from '../models/product.model';
+import { Url } from '../models/url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  url: string;
+  url: string = Url;
 
   constructor(private http: HttpClient) {
-    this.url = 'http://127.0.0.1:4000';
   }
 
   getAllProducts() {

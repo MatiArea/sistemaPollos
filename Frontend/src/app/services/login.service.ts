@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators'; 
+import { Url } from '../models/url';
 
 
 @Injectable({
@@ -8,10 +9,9 @@ import { map } from 'rxjs/operators';
 })
 export class LoginService {
 
-  url:string;
+  url:string = Url;
 
   constructor(private http:HttpClient) { 
-    this.url = 'http://127.0.0.1:4000';
   }
 
   validateAccount(username,password){
