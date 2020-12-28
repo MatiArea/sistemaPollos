@@ -252,6 +252,7 @@ export async function generateListPdf(req, res) {
         await browser.close();
         console.log("PDF creado con exito!");
         let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
+        console.log(file)
         res.setHeader("Content-type", "application/pdf");
         res.download(file, (err) => {
           if (err) {
@@ -263,7 +264,6 @@ export async function generateListPdf(req, res) {
         });
       });
     } catch (error) {
-      console.log("HOLA");
       res.status(500).json({
         error,
         message: "Error, list not created",
