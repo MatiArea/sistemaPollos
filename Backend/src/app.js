@@ -56,7 +56,7 @@ app.use("/report", ReportRouter);
 app.get("/*", function (req, res) {
   res.sendFile(
     path.join(
-      __dirname,
+      process.cwd(),
       "/home/bitnami/sistemaPollos/Backend/public/index.html"
     ),
     function (err) {
