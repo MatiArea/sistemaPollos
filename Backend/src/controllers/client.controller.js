@@ -222,6 +222,7 @@ export async function generateListPdf(req, res) {
     let arrayClients = [];
     try {
       await Client.findAll().then(async (clients) => {
+        console.log(path.join(process.cwd(), "src/template/templateList.html"))
         var templateHtml = fs.readFileSync(
           path.join(process.cwd(), "src/template/templateList.html"),
           "utf8"
