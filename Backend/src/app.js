@@ -49,7 +49,7 @@ app.use((req, res, next) => {
   app.use("/cash", cashRouter);
   app.use("/report", ReportRouter);
   //
-  app.get("/*", function (req, res) {
+  app.get("*", function (req, res) {
     res.sendFile("/home/bitnami/sistemaPollos/Backend/public/index.html");
   });
   
