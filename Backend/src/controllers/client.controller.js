@@ -241,7 +241,7 @@ export async function generateListPdf(req, res) {
           format: "A4",
           landscape: true,
           printBackground: true,
-          path: `./src/template/listaClientes.pdf`,
+          path: path.join(process.cwd(), "src/template/listaClientes.pdf")
         };
 
         const browser = await puppeteer.launch();
@@ -253,7 +253,6 @@ export async function generateListPdf(req, res) {
         console.log("PDF creado con exito!");
         let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
         console.log(file)
-        res.setHeader("Content-type", "application/pdf");
         res.download(file, (err) => {
           if (err) {
             console.error(err);
