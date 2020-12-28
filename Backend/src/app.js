@@ -57,7 +57,7 @@ app.get("/*", function (req, res) {
   res.sendFile(
     path.join(
       process.cwd(),
-      "/home/bitnami/sistemaPollos/Backend/public/index.html"
+      "public/index.html"
     ),
     function (err) {
       if (err) {
