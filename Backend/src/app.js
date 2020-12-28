@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import morgan from "morgan";
 var expressStaticGzip = require("express-static-gzip");
+var path = require('path')
 
 // importing routes
 import clientRouter from "./routes/client";
