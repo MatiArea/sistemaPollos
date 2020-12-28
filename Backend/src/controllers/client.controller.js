@@ -221,8 +221,7 @@ export async function generateListPdf(req, res) {
     }
     let arrayClients = [];
     try {
-      await Client.findAll()
-      .then(async (clients) => {
+      await Client.findAll().then(async (clients) => {
         var templateHtml = fs.readFileSync(
           path.join(process.cwd(), "src/template/templateList.html"),
           "utf8"
@@ -253,8 +252,8 @@ export async function generateListPdf(req, res) {
         await browser.close();
         console.log("PDF creado con exito!");
         let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
-        res.setHeader('Content-type', 'application/pdf');
-        res.download(file,'listaClientes.pdf',(err) => {
+        res.setHeader("Content-type", "application/pdf");
+        res.download(file, (err) => {
           if (err) {
             console.error(err);
             return;
@@ -262,19 +261,13 @@ export async function generateListPdf(req, res) {
 
           fs.unlinkSync(file);
         });
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: "Error, list not created",
-        });
       });
     } catch (error) {
-      console.log('HOLA')
+      console.log("HOLA");
       res.status(500).json({
         error,
         message: "Error, list not created",
       });
     }
-    
   });
 }
