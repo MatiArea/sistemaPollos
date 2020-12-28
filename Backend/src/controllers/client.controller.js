@@ -244,7 +244,10 @@ export async function generateListPdf(req, res) {
         path: path.join(process.cwd(), "src/template/listaClientes.pdf"),
       };
       try {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+          headless: true,
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        });
         const page = await browser.newPage();
         await page.setContent(finalHtml);
         await page.emulateMediaType("screen");
