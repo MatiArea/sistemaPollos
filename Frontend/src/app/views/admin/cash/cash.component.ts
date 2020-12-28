@@ -23,6 +23,8 @@ export class CashComponent implements OnInit {
   total: number
   difValue: number
   message: any
+  cargandoCloseCash:boolean
+  cargandoUpdateCash:boolean
 
 
   constructor(private cashService: CashService,
@@ -53,7 +55,9 @@ export class CashComponent implements OnInit {
   }
 
   updateCashValue(form: any) {
+    this.cargandoUpdateCash = true
     this.cashService.changeValue(this.value).subscribe(cash => {
+      this.cargandoUpdateCash = false
       this.toastr.success('Caja actualizada con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -63,6 +67,7 @@ export class CashComponent implements OnInit {
       this.updateModal.hide()
 
     }, (error) => {
+      this.cargandoUpdateCash = false
       if (error) {
         if (error.code === 403) {
           this.router.navigate(['login']);
@@ -76,7 +81,9 @@ export class CashComponent implements OnInit {
   }
 
   close(form: any) {
+    this.cargandoCloseCash = true
     this.cashService.getValueCash().subscribe(cash => {
+      this.cargandoCloseCash = false
       this.total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b500 * 500 + this.cash.b1000 * 1000
       if (cash['cash'][1].amount === this.total) {
         this.cashService.changeValue(cash['cash'][1].amount).subscribe(data => {
@@ -100,6 +107,7 @@ export class CashComponent implements OnInit {
         })
       }
       else {
+        this.cargandoCloseCash = false
         this.difValue = cash['cash'][1].amount - this.total
         if (this.difValue > 0) {
           this.message = `El sistema tiene cargado $ ${this.difValue} extras`
@@ -111,6 +119,7 @@ export class CashComponent implements OnInit {
       }
     }, (error) => {
       if (error) {
+        this.cargandoCloseCash = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }

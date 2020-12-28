@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-12 col-lg-2 d-flex align-items-start">
     <button
       type="button"
       class="btn btn-block btn-success .btn-large active"
@@ -109,6 +109,7 @@
                 type="number"
                 placeholder="Numero"
                 [(ngModel)]="purchase.number"
+                min="0"
                 name="number"
               />
             </div>
@@ -167,6 +168,7 @@
                 class="form-control ng-untouched ng-pristine ng-valid"
                 type="number"
                 name="precio"
+                min="0"
                 placeholder="Precio"
                 [(ngModel)]="purchase.price"
               />
@@ -181,7 +183,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Crear Compra</button>
+          <button type="submit" class="btn btn-success">
+            Crear Compra
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreatePurchase"
+            ></span>
+          </button>
         </div>
       </form>
     </div>

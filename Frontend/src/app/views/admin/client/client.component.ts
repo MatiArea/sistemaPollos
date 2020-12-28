@@ -18,6 +18,9 @@ export class ClientComponent implements OnInit {
   client:any;
   clientToEdit:any;
   clients:any;
+  cargandoDownload:boolean;
+  cargandoCreateClient:boolean;
+  cargandoUpdateClient:boolean;
 
   constructor(private clientService:ClientService,private router:Router,private toastr:ToastrService) { 
     this.client = new Client()
@@ -39,8 +42,9 @@ export class ClientComponent implements OnInit {
   }
 
   createClient(createForm:NgForm){
+    this.cargandoCreateClient = true
     this.clientService.createClient(this.client).subscribe( data => {
-      
+      this.cargandoCreateClient = false
       this.toastr.success('Cliente creado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -52,6 +56,7 @@ export class ClientComponent implements OnInit {
 
     },(error)=>{
       if(error){
+        this.cargandoCreateClient = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }
@@ -71,8 +76,9 @@ export class ClientComponent implements OnInit {
   }
 
   editClient(editForm:NgForm){
+    this.cargandoUpdateClient = true
     this.clientService.editClient(this.clientToEdit).subscribe( data => {
-      
+      this.cargandoUpdateClient = false
       this.toastr.success('Cliente actualizado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -84,6 +90,7 @@ export class ClientComponent implements OnInit {
 
     },(error)=>{
       if(error){
+        this.cargandoUpdateClient = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }
@@ -116,7 +123,9 @@ export class ClientComponent implements OnInit {
   }
 
   downloadPdf(){
+    this.cargandoDownload = true
     this.clientService.createPDF().subscribe(response => {
+      this.cargandoDownload = false
       saveAs(response, `ListaClientes.pdf`);
     });
   } 

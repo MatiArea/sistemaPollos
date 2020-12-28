@@ -24,6 +24,7 @@ export class SaleComponent implements OnInit {
   items: any
   id_client: number
   saleView: SaleView
+  cargandoCreateSale:boolean
 
   constructor(private saleService: SaleService, private productService: ProductService, private router: Router, private clientService: ClientService, private toastr: ToastrService) {
     this.sale = new Sale()
@@ -133,6 +134,7 @@ export class SaleComponent implements OnInit {
   }
 
   createSale(createForm: any) {
+    this.cargandoCreateSale = true
     let newSale = {
       number: this.sale.number,
       date: this.sale.date,
@@ -142,6 +144,7 @@ export class SaleComponent implements OnInit {
       items: this.items
     }
     this.saleService.createSale(newSale).subscribe(data => {
+      this.cargandoCreateSale = false
       this.toastr.success('Venta creada con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -152,6 +155,7 @@ export class SaleComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        this.cargandoCreateSale = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }

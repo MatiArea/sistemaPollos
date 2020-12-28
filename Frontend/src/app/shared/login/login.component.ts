@@ -12,6 +12,7 @@ import jwt_decode from "jwt-decode";
 })
 export class LoginComponent {
   account: Account;
+  cargando:boolean;
 
   constructor(private router: Router, private toastr: ToastrService, private loginService: LoginService,) { }
 
@@ -20,8 +21,10 @@ export class LoginComponent {
   }
 
   onSubmit(loginForm: NgForm) {
+    this.cargando = true
     if (this.account.username != null && this.account.password != null) {
       this.loginService.validateAccount(this.account.username, this.account.password).subscribe((data) => {
+        this.cargando = false
         var token = sessionStorage.getItem('token');
         var token_decode = jwt_decode(token);
         if (token_decode['admin'] == true) {
@@ -40,6 +43,7 @@ export class LoginComponent {
       });
     }
     else {
+      this.cargando = false
       this.toastr.warning('Usuario o contraseña no pueden ser vacio', 'Error!', {
         closeButton: true,
       });

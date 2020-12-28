@@ -1,0 +1,19 @@
+@media (max-width: 340px) {
+  .flexMin {
+    margin-bottom: 2;
+  }
+  .marginCard {
+    margin-left: 2;
+  }
+  /* d-flex align-items-start */
+}
+
+@media (min-width: 350px) {
+  .flexLarge {
+    flex-direction: row;
+  }
+  .marginCard {
+    margin-left: 2;
+  }
+  /* d-flex align-items-start */
+}

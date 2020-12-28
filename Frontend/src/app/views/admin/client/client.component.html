@@ -1,26 +1,27 @@
 <div class="container-fluid">
-  <div class="col-sm-12 col-lg-3 d-flex align-items-start">
-    <div class="m-auto">
-      <button
-      style="height: 43px;"
-        type="button"
-        class="btn btn-block btn-success active"
-        (click)="newClientModal.show()"
-      >
-        Agregar Cliente
-      </button>
-    </div>
-    <div >
-      <div class="m-auto">
-        <button
-          (click)="downloadPdf()"
-          type="button"
-          class="btn btn-lg btn-primary"
-        >
-          <i class="fas fa-file-pdf"></i> Descargar lista clientes
-        </button>
-      </div>
-    </div>
+  <div class="col-sm-12 col-lg-4 d-flex align-items-start">
+    <button
+      type="button"
+      class="btn btn-block btn-success active mr-2 col-4"
+      (click)="newClientModal.show()"
+    >
+      Agregar Cliente
+    </button>
+
+    <button
+      (click)="downloadPdf()"
+      type="button"
+      class="btn btn-lg btn-primary active ml-2 col-6"
+    >
+      <i class="fas fa-file-pdf"></i>
+      Descargar lista clientes
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="this.cargandoDownload"
+      ></span>
+    </button>
   </div>
 
   <div class="card mt-2">
@@ -153,12 +154,17 @@
             [disabled]="!createForm.valid"
           >
             Crear cliente
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateClient"
+            ></span>
           </button>
         </div>
       </form>
     </div>
   </div>
-  >
 </div>
 
 <!-- -----------EDIT CLIENT MODAL----------- -->
@@ -228,6 +234,7 @@
                     class="form-control"
                     id="editBalance"
                     name="balance"
+                    min="0"
                     [(ngModel)]="clientToEdit.balance"
                     required
                   />
@@ -250,6 +257,12 @@
             [disabled]="!editForm.valid"
           >
             Actualizar cliente
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoUpdateClient"
+            ></span>
           </button>
         </div>
       </form>

@@ -1,10 +1,10 @@
 <div class="container-fluid">
-  <div class="col-sm-12 col-lg-3 d-flex align-items-start">
+  <div class="col-sm-12 col-lg-4 d-flex align-items-start">
     <div class="m-auto">
       <button
         style="height: 43px"
         type="button"
-        class="btn btn-block btn-success active"
+        class="btn btn-block btn-success active col-4"
         (click)="newClientModal.show()"
       >
         Agregar Cliente
@@ -17,7 +17,15 @@
           type="button"
           class="btn btn-lg btn-primary"
         >
-          <i class="fas fa-file-pdf"></i> Descargar lista clientes
+          <i class="fas fa-file-pdf"
+            ><span
+              class="spinner-border spinner-border-sm col-6"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoDownload"
+            ></span
+            >Descargar Lista clientes</i
+          >
         </button>
       </div>
     </div>
@@ -140,6 +148,12 @@
             [disabled]="!createForm.valid"
           >
             Crear cliente
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateClient"
+            ></span>
           </button>
         </div>
       </form>
@@ -184,7 +198,6 @@
                     id="editName"
                     name="name"
                     [(ngModel)]="clientToEdit.name"
-                    placeholder="Juan Carlos Gimenez"
                     required
                   />
                 </div>
@@ -200,7 +213,6 @@
                     id="editAddress"
                     name="address"
                     [(ngModel)]="clientToEdit.address"
-                    placeholder="Calle Del Valle 1820"
                     required
                   />
                 </div>
@@ -216,6 +228,7 @@
                     id="editBalance"
                     name="balance"
                     [(ngModel)]="clientToEdit.balance"
+                    min="0"
                     required
                   />
                 </div>
@@ -237,6 +250,12 @@
             [disabled]="!editForm.valid"
           >
             Actualizar cliente
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoUpdateClient"
+            ></span>
           </button>
         </div>
       </form>

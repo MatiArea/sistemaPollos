@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-8 col-lg-2 d-flex align-items-start">
     <button
       type="button"
       class="btn btn-block btn-success .btn-large active"
@@ -44,13 +44,14 @@
             <td class="text-left">{{ product.name }}</td>
             <td class="text-center">{{ product.stock }}</td>
             <td class="text-center">$ {{ product.sale_price }}</td>
-            <td class="text-center" *ngIf="product.cost_price.length === 0; else valueCostPrice">
+            <td
+              class="text-center"
+              *ngIf="product.cost_price.length === 0; else valueCostPrice"
+            >
               $ 0
             </td>
             <ng-template #valueCostPrice>
-              <td class="text-center"> 
-                $ {{ product.cost_price[0].price }}
-              </td>
+              <td class="text-center">$ {{ product.cost_price[0].price }}</td>
             </ng-template>
             <td class="text-center">
               <i
@@ -58,9 +59,11 @@
                 style="cursor: pointer"
                 (click)="openEditProduct(product)"
               ></i>
-              <i class="fas fa-trash-alt click icono"
+              <i
+                class="fas fa-trash-alt click icono"
                 style="cursor: pointer"
-                (click)="deleteProduct(product)"></i>
+                (click)="deleteProduct(product)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -93,8 +96,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form (ngSubmit)="createProduct(createForm)" #createForm="ngForm" id="createForm">
-
+      <form
+        (ngSubmit)="createProduct(createForm)"
+        #createForm="ngForm"
+        id="createForm"
+      >
         <div class="modal-body">
           <div>
             <div class="row">
@@ -102,12 +108,13 @@
                 <div class="form-group">
                   <label for="code">Codigo</label>
                   <input
-                  type="number"
-                  class="form-control"
-                  id="code"
-                  placeholder="1001"
-                  [(ngModel)]="product.code"
-                  name="code"
+                    type="number"
+                    class="form-control"
+                    id="code"
+                    placeholder="1001"
+                    [(ngModel)]="product.code"
+                    name="code"
+                    min="0"
                   />
                 </div>
               </div>
@@ -117,12 +124,12 @@
                 <div class="form-group">
                   <label for="name">Nombre</label>
                   <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  placeholder="Caramelos"
-                  [(ngModel)]="product.name"
-                  name="name"
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Caramelos"
+                    [(ngModel)]="product.name"
+                    name="name"
                   />
                 </div>
               </div>
@@ -131,15 +138,23 @@
         </div>
         <div class="modal-footer">
           <button
-          type="button"
-          class="btn btn-danger"
-          (click)="newProductModal.hide()"
+            type="button"
+            class="btn btn-danger"
+            (click)="newProductModal.hide()"
           >
-          Cancelar
-        </button>
-        <button type="submit" class="btn btn-success">Crear producto</button>
-      </div>
-    </form>
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-success">
+            Crear producto
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateProduct"
+            ></span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -147,13 +162,13 @@
 <!-- -------------------------------------------------EDIT PRODUCT MODAL-------------------------------------------------------------------------------------------- -->
 
 <div
-bsModal
-#editProductModal="bs-modal"
-class="modal fade"
-tabindex="-1"
-role="dialog"
-aria-labelledby="myModalLabel"
-aria-hidden="true"
+  bsModal
+  #editProductModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -169,7 +184,6 @@ aria-hidden="true"
         </button>
       </div>
       <form (ngSubmit)="editProduct(editForm)" #editForm="ngForm" id="editForm">
-
         <div class="modal-body">
           <div>
             <div class="row">
@@ -177,11 +191,12 @@ aria-hidden="true"
                 <div class="form-group">
                   <label for="code">Codigo</label>
                   <input
-                  type="number"
-                  class="form-control"
-                  id="EditCode"
-                  [(ngModel)]="productToEdit.code"
-                  name="code"
+                    type="number"
+                    class="form-control"
+                    id="EditCode"
+                    [(ngModel)]="productToEdit.code"
+                    name="code"
+                    min="0"
                   />
                 </div>
               </div>
@@ -191,11 +206,11 @@ aria-hidden="true"
                 <div class="form-group">
                   <label for="name">Nombre</label>
                   <input
-                  type="text"
-                  class="form-control"
-                  id="EditName"
-                  [(ngModel)]="productToEdit.name"
-                  name="name"
+                    type="text"
+                    class="form-control"
+                    id="EditName"
+                    [(ngModel)]="productToEdit.name"
+                    name="name"
                   />
                 </div>
               </div>
@@ -206,41 +221,51 @@ aria-hidden="true"
               <div class="form-group">
                 <label for="stock">Stock</label>
                 <input
-                type="number"
-                class="form-control"
-                id="EditStock"
-                name="stock"
-                [(ngModel)]="productToEdit.stock"
+                  type="number"
+                  class="form-control"
+                  id="EditStock"
+                  name="stock"
+                  [(ngModel)]="productToEdit.stock"
+                  min="0"
                 />
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md">
-            <div class="form-group">
-              <label for="sale_price">Precio Venta</label>
-              <input
-              type="number"
-              class="form-control"
-                id="EditSale_price"
-                name="sale_price"
-                [(ngModel)]="productToEdit.sale_price"
+              <div class="form-group">
+                <label for="sale_price">Precio Venta</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="EditSale_price"
+                  name="sale_price"
+                  [(ngModel)]="productToEdit.sale_price"
+                  min="0"
                 />
               </div>
             </div>
           </div>
           <div class="modal-footer">
-          <button
-          type="button"
-            class="btn btn-danger"
-            (click)="editProductModal.hide()"
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="editProductModal.hide()"
             >
-            Cancelar
-          </button>
-          <button type="submit" class="btn btn-success">Actualizar producto</button>
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-success">
+              Actualizar producto
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="this.cargandoUpdateProduct"
+              ></span>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>

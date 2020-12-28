@@ -18,6 +18,7 @@ export class ExpenseComponent implements OnInit {
   viewExpense: Expense
   typeSelect: number
   viewType: number
+  cargandoExpense:boolean
 
   types = ["Varios", "Combustible"]
 
@@ -60,6 +61,7 @@ export class ExpenseComponent implements OnInit {
   }
 
   createExpense(createForm: any) {
+    this.cargandoExpense = true
     const newExpense = {
       date: this.expense.date,
       type: this.types[this.typeSelect],
@@ -67,6 +69,7 @@ export class ExpenseComponent implements OnInit {
       description: this.expense.description
     }
     this.expenseService.createExpense(newExpense).subscribe(data => {
+      this.cargandoExpense = false
       this.toastr.success('Gasto cargado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -77,6 +80,7 @@ export class ExpenseComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        this.cargandoExpense = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }

@@ -16,6 +16,8 @@ export class ProductComponent implements OnInit {
   product: any;
   productToEdit: any;
   products: any;
+  cargandoCreateProduct:boolean
+  cargandoUpdateProduct:boolean
 
   constructor(private productoService: ProductService, private router: Router, private toastr: ToastrService) {
     this.product = new Product()
@@ -39,8 +41,9 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(createForm: any) {
+    this.cargandoCreateProduct = true
     this.productoService.createProduct(this.product).subscribe(data => {
-
+      this.cargandoCreateProduct = false
       this.toastr.success('Producto creado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -52,6 +55,7 @@ export class ProductComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        this.cargandoCreateProduct = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }
@@ -71,8 +75,9 @@ export class ProductComponent implements OnInit {
   }
 
   editProduct(editForm: any) {
+    this.cargandoUpdateProduct = true
     this.productoService.editProduct(this.productToEdit).subscribe(data => {
-
+      this.cargandoUpdateProduct = false
       this.toastr.success('Producto actualizado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -84,6 +89,7 @@ export class ProductComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        this.cargandoUpdateProduct = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }

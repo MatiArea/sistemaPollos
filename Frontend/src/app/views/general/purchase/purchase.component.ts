@@ -23,6 +23,7 @@ export class PurchaseComponent implements OnInit {
   purchase: Purchase
   total: number
   purchases: any
+  cargandoCreatePurchase:boolean
 
   @ViewChild('editPurchaseModal', { static: false }) public editPurchaseModal: ModalDirective;
   @ViewChild('newPurchaseModal', { static: false }) public newPurchaseModal: ModalDirective;
@@ -56,6 +57,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   createPurchase(createForm: any) {
+    this.cargandoCreatePurchase = true
     const purchase = {
       date: this.purchase.date,
       number: this.purchase.number,
@@ -64,6 +66,7 @@ export class PurchaseComponent implements OnInit {
       idProduct: this.idProductSelect
     }
     this.purchaseService.createPurchase(purchase).subscribe(data => {
+      this.cargandoCreatePurchase = false
       this.toastr.success('Producto creado con exito', 'Exito!', {
         closeButton: true,
         progressBar: true
@@ -74,6 +77,7 @@ export class PurchaseComponent implements OnInit {
 
     }, (error) => {
       if (error) {
+        this.cargandoCreatePurchase = false
         if (error.code === 403) {
           this.router.navigate(['login']);
         }

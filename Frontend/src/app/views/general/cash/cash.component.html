@@ -14,7 +14,7 @@
   <div class="col-4 d-flex align-items-center">
     <button
       type="button"
-      class="btn btn-block btn-success .btn-large active"
+      class="btn btn-block btn-success active"
       (click)="updateModal.show()"
     >
       Actualizar caja
@@ -39,6 +39,7 @@
               class="form-control"
               id="cant10"
               name="b10"
+              min="0"
               [(ngModel)]="cash.b10"
             />
           </div>
@@ -55,6 +56,7 @@
               type="number"
               class="form-control"
               id="cant20"
+              min="0"
               name="b20"
               [(ngModel)]="cash.b20"
             />
@@ -72,6 +74,7 @@
               type="number"
               class="form-control"
               id="cant50"
+              min="0"
               name="b50"
               [(ngModel)]="cash.b50"
             />
@@ -89,6 +92,7 @@
               type="number"
               class="form-control"
               id="cant100"
+              min="0"
               name="b100"
               [(ngModel)]="cash.b100"
             />
@@ -106,6 +110,7 @@
               type="number"
               class="form-control"
               id="cant500"
+              min="0"
               name="b500"
               [(ngModel)]="cash.b500"
             />
@@ -123,13 +128,22 @@
               type="number"
               class="form-control"
               id="cant1000"
+              min="0"
               name="b1000"
               [(ngModel)]="cash.b1000"
             />
           </div>
         </fieldset>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Cierre de caja</button>
+          <button type="submit" class="btn btn-success">
+            Cierre de caja
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCloseCash"
+            ></span>
+          </button>
         </div>
       </form>
     </div>
@@ -181,6 +195,7 @@
                   id="total"
                   name="total"
                   [(ngModel)]="value"
+                  min="0"
                   placeholder="Monto"
                 />
               </div>
@@ -195,7 +210,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Actualizar caja</button>
+          <button type="submit" class="btn btn-success">
+            Actualizar caja
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoUpdateCash"
+            ></span>
+          </button>
         </div>
       </form>
     </div>
@@ -218,7 +241,7 @@
         <h4 class="modal-title">Error</h4>
       </div>
       <div class="d-flex justify-content-center m-5 font-weight-bold lead">
-        {{message}}
+        {{ message }}
       </div>
       <div class="modal-footer">
         <button

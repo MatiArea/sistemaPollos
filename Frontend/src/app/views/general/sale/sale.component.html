@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-12 col-lg-2 d-flex align-items-start">
     <button
       type="button"
       class="btn btn-block btn-success .btn-large active"
@@ -89,6 +89,7 @@
                 class="form-control ng-untouched ng-pristine ng-valid"
                 type="number"
                 placeholder="Numero"
+                min="0"
                 name="number"
                 [(ngModel)]="sale.number"
               />
@@ -166,6 +167,7 @@
                   class="form-control ml-4"
                   type="number"
                   name="cantidad"
+                  min="0"
                   placeholder="Cantidad"
                   [(ngModel)]="quantity"
                 />
@@ -240,6 +242,7 @@
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
                 type="number"
+                min="0"
                 placeholder="Total"
                 [(ngModel)]="sale.total"
                 name="total"
@@ -256,7 +259,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Crear Venta</button>
+          <button type="submit" class="btn btn-success">
+            Crear Venta
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateSale"
+            ></span>
+          </button>
         </div>
       </form>
     </div>
@@ -296,6 +307,7 @@
                   ><i class="fa fa-list-ol"></i></span></span
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
+                min="0"
                 type="number"
                 placeholder="Numero"
                 name="number"
@@ -379,6 +391,7 @@
                   ><i class="fa fa-usd"></i></span></span
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
+                min="0"
                 type="number"
                 placeholder="Pago"
                 [(ngModel)]="saleView.payment"
@@ -394,6 +407,7 @@
                   ><i class="fa fa-usd"></i></span></span
               ><input
                 class="form-control ng-untouched ng-pristine ng-valid"
+                min="0"
                 type="number"
                 placeholder="Total"
                 [(ngModel)]="saleView.total"

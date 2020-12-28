@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-12 col-lg-2 d-flex align-items-start">
     <button
       type="button"
       class="btn btn-block btn-success .btn-large active"
@@ -103,6 +103,7 @@
                 type="number"
                 placeholder="Numero"
                 name="number"
+                min="0"
                 [(ngModel)]="sale.number"
               />
             </div>
@@ -180,6 +181,7 @@
                   type="number"
                   name="cantidad"
                   placeholder="Cantidad"
+                  min="0"
                   [(ngModel)]="quantity"
                 />
                 <div class="text-center ml-3">
@@ -241,6 +243,7 @@
                 type="number"
                 placeholder="Pago"
                 [(ngModel)]="sale.payment"
+                min="0"
                 name="payment"
               />
             </div>
@@ -256,6 +259,7 @@
                 placeholder="Total"
                 [(ngModel)]="sale.total"
                 name="total"
+                min="0"
                 disabled
               />
             </div>
@@ -269,7 +273,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Crear Venta</button>
+          <button type="submit" class="btn btn-success">
+            Crear Venta
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateSale"
+            ></span>
+          </button>
         </div>
       </form>
     </div>
@@ -313,6 +325,7 @@
                 placeholder="Numero"
                 name="number"
                 [(ngModel)]="saleView.number"
+                min="0"
                 disabled
               />
             </div>
@@ -396,6 +409,7 @@
                 placeholder="Pago"
                 [(ngModel)]="saleView.payment"
                 name="payment"
+                min="0"
                 disabled
               />
             </div>
@@ -411,6 +425,7 @@
                 placeholder="Total"
                 [(ngModel)]="saleView.total"
                 name="total"
+                min="0"
                 disabled
               />
             </div>

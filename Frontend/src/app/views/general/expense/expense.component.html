@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-2 col-lg-2 d-flex align-items-start">
     <button
       type="button"
       class="btn btn-block btn-success .btn-large active"
@@ -115,6 +115,7 @@
                   id="amount"
                   name="amount"
                   [(ngModel)]="expense.amount"
+                  min="0"
                   placeholder="Monto"
                 />
               </div>
@@ -147,7 +148,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Carga Gasto</button>
+          <button type="submit" class="btn btn-success">
+            Carga Gasto
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreateExpense"
+            ></span>
+          </button>
         </div>
       </form>
     </div>
@@ -238,6 +247,7 @@
                   name="amount"
                   [(ngModel)]="viewExpense.amount"
                   placeholder="Monto"
+                  min="0"
                   disabled
                 />
               </div>

@@ -1,8 +1,8 @@
 <div class="container-fluid">
-  <div class="col-2">
+  <div class="col-sm-12 col-lg-2 d-flex align-items-start">
     <button
       type="button"
-      class="btn btn-block btn-success .btn-large active"
+      class="btn btn-block btn-success active"
       (click)="opentNewPurchaseModal()"
     >
       Agregar Compra
@@ -118,6 +118,7 @@
                 placeholder="Numero"
                 [(ngModel)]="purchase.number"
                 name="number"
+                min="0"
               />
             </div>
           </fieldset>
@@ -176,6 +177,7 @@
                 type="number"
                 name="precio"
                 placeholder="Precio"
+                min="0"
                 [(ngModel)]="purchase.price"
               />
             </div>
@@ -189,7 +191,15 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">Crear Compra</button>
+          <button type="submit" class="btn btn-success">
+            Crear Compra
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              *ngIf="this.cargandoCreatePurchase"
+            ></span>
+          </button>
         </div>
       </form>
     </div>

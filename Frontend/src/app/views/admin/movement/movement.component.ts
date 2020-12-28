@@ -19,6 +19,7 @@ export class MovementComponent implements OnInit {
   movements: []
   clientId: number
   clients: []
+  cargandoMovement:boolean
 
   constructor(private clientService: ClientService, private router: Router, private toastr: ToastrService, private movementService: MovementService) {
 
@@ -58,12 +59,13 @@ export class MovementComponent implements OnInit {
 
 
   createMovement(createForm: NgForm) {
+    this.cargandoMovement = true
     if (this.clientId != 0) {
       this.movement.client = this.clientId
 
       this.movementService.createMovement(this.movement).subscribe(data => {
         this.clientService.updateBalance(this.clientId, this.movement.amount).subscribe(dataClient => {
-
+          this.cargandoMovement = false
           this.toastr.success('Movimiento creado con exito', 'Exito!', {
             closeButton: true,
             progressBar: true
@@ -75,6 +77,7 @@ export class MovementComponent implements OnInit {
 
         }, (error) => {
           if (error) {
+            this.cargandoMovement = false
             if (error.code === 403) {
               this.router.navigate(['login']);
             }
@@ -86,6 +89,7 @@ export class MovementComponent implements OnInit {
         })
       }, (error) => {
         if (error) {
+          this.cargandoMovement = false
           if (error.code === 403) {
             this.router.navigate(['login']);
           }
@@ -96,6 +100,7 @@ export class MovementComponent implements OnInit {
         }
       })
     } else {
+      this.cargandoMovement = false
       this.toastr.error('No se pude cargar el movimiento', 'Error!', {
         closeButton: true,
         progressBar: true
