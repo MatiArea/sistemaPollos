@@ -50,7 +50,7 @@ app.use((req, res, next) => {
   app.use("/report", ReportRouter);
   //
   app.get("/*", function (req, res) {
-    res.sendFile("./public/index.html");
+    res.sendFile("/home/bitnami/sistemaPollos/Backend/public/index.html");
   });
   
   export default app;
