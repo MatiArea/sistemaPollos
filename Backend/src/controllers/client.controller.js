@@ -253,6 +253,7 @@ export async function generateListPdf(req, res) {
         await browser.close();
         console.log("PDF creado con exito!");
         let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
+        res.setHeader('Content-type', 'application/pdf');
         res.download(file,'listaClientes.pdf',(err) => {
           if (err) {
             console.error(err);
