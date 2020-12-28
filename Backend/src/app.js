@@ -34,24 +34,36 @@ app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Headers",
     "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-    );
-    next();
-  });
-  
-  // routes
-  app.use("/client", clientRouter);
-  app.use("/expense", expenseRouter);
-  app.use("/user", userRouter);
-  app.use("/product", productRouter);
-  app.use("/purchase", purchaseRouter);
-  app.use("/movement", movementRouter);
-  app.use("/sale", saleRouter);
-  app.use("/cash", cashRouter);
-  app.use("/report", ReportRouter);
-  //
-  app.get("/", function (req, res) {
-    res.sendFile("/home/bitnami/sistemaPollos/Backend/public/index.html");
-  });
-  
-  export default app;
-  
+  );
+  next();
+});
+
+// routes
+app.use("/client", clientRouter);
+app.use("/expense", expenseRouter);
+app.use("/user", userRouter);
+app.use("/product", productRouter);
+app.use("/purchase", purchaseRouter);
+app.use("/movement", movementRouter);
+app.use("/sale", saleRouter);
+app.use("/cash", cashRouter);
+app.use("/report", ReportRouter);
+//
+// app.get("/", function (req, res) {
+//   res.sendFile("/home/bitnami/sistemaPollos/Backend/public/index.html");
+// });
+app.get("/*", function (req, res) {
+  res.sendFile(
+    path.join(
+      __dirname,
+      "/home/bitnami/sistemaPollos/Backend/public/index.html"
+    ),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
+
+export default app;

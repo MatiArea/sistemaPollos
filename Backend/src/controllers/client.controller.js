@@ -268,6 +268,7 @@ export async function generateListPdf(req, res) {
         });
       });
     } catch (error) {
+      console.log('HOLA')
       res.status(500).json({
         error,
         message: "Error, list not created",
