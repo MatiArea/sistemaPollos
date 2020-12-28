@@ -220,54 +220,50 @@ export async function generateListPdf(req, res) {
       });
     }
     let arrayClients = [];
-    try {
-      await Client.findAll().then(async (clients) => {
-        console.log(path.join(process.cwd(), "src/template/templateList.html"))
-        var templateHtml = fs.readFileSync(
-          path.join(process.cwd(), "src/template/templateList.html"),
-          "utf8"
-        );
+    await Client.findAll().then(async (clients) => {
+      console.log(path.join(process.cwd(), "src/template/templateList.html"));
+      var templateHtml = fs.readFileSync(
+        path.join(process.cwd(), "src/template/templateList.html"),
+        "utf8"
+      );
 
-        clients.forEach((element) => {
-          let client = {
-            name: element.name,
-            balance: element.balance,
-          };
-          arrayClients.push(client);
-        });
-
-        var template = handlebars.compile(templateHtml);
-        var finalHtml = template({ arrayClients });
-        var options = {
-          format: "A4",
-          landscape: true,
-          printBackground: true,
-          path: path.join(process.cwd(), "src/template/listaClientes.pdf")
+      clients.forEach((element) => {
+        let client = {
+          name: element.name,
+          balance: element.balance,
         };
+        arrayClients.push(client);
+      });
 
+      var template = handlebars.compile(templateHtml);
+      var finalHtml = template({ arrayClients });
+      var options = {
+        format: "A4",
+        landscape: true,
+        printBackground: true,
+        path: path.join(process.cwd(), "src/template/listaClientes.pdf"),
+      };
+      try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setContent(finalHtml);
         await page.emulateMediaType("screen");
         await page.pdf(options);
         await browser.close();
-        console.log("PDF creado con exito!");
-        let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
-        console.log(file)
-        res.download(file, (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+      } catch (error) {
+        console.log(error);
+      }
+      console.log("PDF creado con exito!");
+      let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
+      console.log(file);
+      res.download(file, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
 
-          fs.unlinkSync(file);
-        });
+        fs.unlinkSync(file);
       });
-    } catch (error) {
-      res.status(500).json({
-        error,
-        message: "Error, list not created",
-      });
-    }
+    });
   });
 }
