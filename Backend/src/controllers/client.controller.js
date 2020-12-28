@@ -254,6 +254,7 @@ export async function generateListPdf(req, res) {
         console.log("PDF creado con exito!");
         let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
         res.download(file, (err) => {
+          console.log('Hola Mundo')
           if (err) {
             console.error(err);
             return;
