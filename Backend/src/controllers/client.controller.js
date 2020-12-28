@@ -220,8 +220,8 @@ export async function generateListPdf(req, res) {
       });
     }
     let arrayClients = [];
-
-    await Client.findAll()
+    try {
+      await Client.findAll()
       .then(async (clients) => {
         var templateHtml = fs.readFileSync(
           path.join(process.cwd(), "./src/template/templateList.html"),
@@ -267,5 +267,12 @@ export async function generateListPdf(req, res) {
           message: "Error, list not created",
         });
       });
+    } catch (error) {
+      res.status(500).json({
+        error,
+        message: "Error, list not created",
+      });
+    }
+    
   });
 }

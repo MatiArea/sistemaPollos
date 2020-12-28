@@ -1,34 +1,27 @@
 <div class="container-fluid">
   <div class="col-sm-12 col-lg-4 d-flex align-items-start">
-    <div class="m-auto">
-      <button
-        style="height: 43px"
-        type="button"
-        class="btn btn-block btn-success active col-4"
-        (click)="newClientModal.show()"
-      >
-        Agregar Cliente
-      </button>
-    </div>
-    <div>
-      <div class="m-auto">
-        <button
-          (click)="downloadPdf()"
-          type="button"
-          class="btn btn-lg btn-primary"
-        >
-          <i class="fas fa-file-pdf"
-            ><span
-              class="spinner-border spinner-border-sm col-6"
-              role="status"
-              aria-hidden="true"
-              *ngIf="this.cargandoDownload"
-            ></span
-            >Descargar Lista clientes</i
-          >
-        </button>
-      </div>
-    </div>
+    <button
+      type="button"
+      class="btn btn-block btn-success active mr-2 col-4"
+      (click)="newClientModal.show()"
+    >
+      Agregar Cliente
+    </button>
+
+    <button
+      (click)="downloadPdf()"
+      type="button"
+      class="btn btn-lg btn-primary active ml-2 col-6"
+    >
+      <i class="fas fa-file-pdf"></i>
+      Descargar lista clientes
+      <span
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+        *ngIf="this.cargandoDownload"
+      ></span>
+    </button>
   </div>
 
   <div class="card mt-2">
