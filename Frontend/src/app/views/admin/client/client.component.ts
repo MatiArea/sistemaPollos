@@ -127,6 +127,17 @@ export class ClientComponent implements OnInit {
     this.clientService.createPDF().subscribe(response => {
       this.cargandoDownload = false
       saveAs(response, `ListaClientes.pdf`);
+    },(error) => {
+      this.cargandoDownload = false
+      if (error) {
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
+        this.toastr.error('No se pude descargar la lista', 'Error!', {
+          closeButton: true,
+          progressBar: true
+        });
+      }
     });
   } 
 
