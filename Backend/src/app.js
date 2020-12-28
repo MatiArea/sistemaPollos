@@ -49,8 +49,8 @@ app.use((req, res, next) => {
   app.use("/cash", cashRouter);
   app.use("/report", ReportRouter);
   //
-  app.get("*", function (req, res) {
-    res.sendFile("../public/index.html");
+  app.get("/*", function (req, res) {
+    res.sendFile("./public/index.html");
   });
   
   export default app;
