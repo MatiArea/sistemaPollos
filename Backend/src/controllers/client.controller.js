@@ -224,7 +224,7 @@ export async function generateListPdf(req, res) {
       await Client.findAll()
       .then(async (clients) => {
         var templateHtml = fs.readFileSync(
-          path.join(process.cwd(), "./src/template/templateList.html"),
+          path.join(process.cwd(), "src/template/templateList.html"),
           "utf8"
         );
 
@@ -252,7 +252,7 @@ export async function generateListPdf(req, res) {
         await page.pdf(options);
         await browser.close();
         console.log("PDF creado con exito!");
-        let file = path.join(process.cwd(), "./src/template/listaClientes.pdf");
+        let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
         res.download(file, (err) => {
           if (err) {
             console.error(err);
