@@ -7,6 +7,7 @@ import { SaleView } from '../../../models/saleView.model';
 import { ClientService } from '../../../services/client.service';
 import { ProductService } from '../../../services/product.service';
 import { SaleService } from '../../../services/sale.service';
+import { each,forEachOf } from 'async'
 
 @Component({
   selector: 'app-sale',
@@ -21,10 +22,11 @@ export class SaleComponent implements OnInit {
   clients: any
   indexProductSelect: number
   quantity: number
+  sale_price:number
   items: any
   id_client: number
   saleView: SaleView
-  cargandoCreateSale:boolean
+  cargandoCreateSale: boolean
 
   constructor(private saleService: SaleService, private productService: ProductService, private router: Router, private clientService: ClientService, private toastr: ToastrService) {
     this.sale = new Sale()
@@ -61,15 +63,48 @@ export class SaleComponent implements OnInit {
   }
 
   getOneSale(idSale: number) {
+    var indexProduct
+    var bandera
+
     this.saleView.items = []
     this.saleService.getOneSale(idSale).subscribe(sale => {
       this.saleView.number = sale['sale'].number
       this.saleView.date = sale['sale'].date.split('T')[0]
       this.saleView.name_client = sale['sale'].client.name
-      this.saleView.items = sale['sale'].products
+      each(sale['sale'].productsales, (itemProducto) => {
+        forEachOf(sale['sale'].products, (element, index) => {
+          if (element.id_product === itemProducto.id_product) {
+            indexProduct = index
+          }
+        })
+        if (this.saleView.items.length === 0) {
+          const item = {
+            product: sale['sale'].products[indexProduct],
+            quantity: itemProducto.quantity,
+            sale_price: itemProducto.sale_price
+          }
+          this.saleView.items.push(item)
+        }
+        else {
+          bandera = true
+          each(this.saleView.items, (itemView) => {
+            if (itemView.product.id_product === itemProducto.id_product) {
+              bandera = false
+              itemView.quantity += itemProducto.quantity
+            }
+          })
+          if (bandera === true) {
+            const item = {
+              product: sale['sale'].products[indexProduct],
+              quantity: itemProducto.quantity,
+              sale_price: itemProducto.sale_price
+            }
+            this.saleView.items.push(item)
+          }
+        }
+      });
       this.saleView.total = sale['sale'].total
       this.saleView.payment = sale['sale'].payment
-
       this.viewSaleModal.show()
     })
   }
@@ -80,6 +115,7 @@ export class SaleComponent implements OnInit {
     this.items = []
     this.sale = new Sale()
     this.sale.total = 0
+    this.sale.date = new Date().toISOString().split('T')[0]
     this.newSaleModal.show()
   }
 
@@ -92,51 +128,66 @@ export class SaleComponent implements OnInit {
   }
 
   addItem(form: any) {
-    if (this.products[this.indexProductSelect].stock < this.quantity) {
-      this.toastr.error('No hay stock suficiente', 'Error!', {
+    let bandera
+    if (this.quantity > 0) {
+      if (this.products[this.indexProductSelect].stock < this.quantity) {
+        this.toastr.error('No hay stock suficiente', 'Error!', {
+          closeButton: true,
+          progressBar: true
+        });
+        form.reset()
+      } else {
+        if (this.items.length === 0) {
+          const item = {
+            product: this.products[this.indexProductSelect],
+            quantity: this.quantity,
+            sale_price: this.sale_price
+          }
+          this.items.push(item)
+          this.sale.total += item.quantity * item.sale_price
+        }
+        else {
+          bandera = false
+          this.items.forEach(element => {
+            if (element.product.id_product === this.products[this.indexProductSelect].id_product) {
+              element.quantity += this.quantity
+              this.sale.total += this.quantity * element.sale_price
+              bandera = true
+            }
+          });
+          if (bandera == false) {
+            {
+              const item = {
+                product: this.products[this.indexProductSelect],
+                quantity: this.quantity,
+                sale_price: this.sale_price
+              }
+              this.items.push(item)
+              this.sale.total += item.quantity * item.sale_price
+            }
+          }
+        }
+        this.products[this.indexProductSelect].stock -= this.quantity
+        form.reset()
+      }
+    } else {
+      this.toastr.error('La cantidad no puede ser 0', 'Error!', {
         closeButton: true,
         progressBar: true
       });
-      form.reset()
-    } else {
-      if (this.items.length === 0) {
-        const item = {
-          product: this.products[this.indexProductSelect],
-          quantity: this.quantity
-        }
-        this.items.push(item)
-        this.products[this.indexProductSelect].stock -= this.quantity
-        this.sale.total += item.quantity * item.product.sale_price
-      }
-      else {
-        this.items.forEach(element => {
-          if (element.product.id_product === this.products[this.indexProductSelect].id_product) {
-            element.quantity += this.quantity
-          }
-          else {
-            const item = {
-              product: this.products[this.indexProductSelect],
-              quantity: this.quantity
-            }
-            this.items.push(item)
-          }
-          this.products[this.indexProductSelect].stock -= this.quantity
-          this.sale.total += element.quantity * element.product.sale_price
-        });
-      }
       form.reset()
     }
   }
 
   deleteItem(item: any) {
+    this.products[this.indexProductSelect].stock += item.quantity
+    this.sale.total -= item.quantity * item.sale_price
     this.items.pop(item)
-    this.sale.total -= item.quantity * item.product.sale_price
   }
 
   createSale(createForm: any) {
     this.cargandoCreateSale = true
     let newSale = {
-      number: this.sale.number,
       date: this.sale.date,
       id_client: this.sale.id_client,
       total: this.sale.total,

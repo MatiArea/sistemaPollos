@@ -36,6 +36,7 @@ export class LoginComponent {
           this.router.navigate['login']
         }
       }, error => {
+        this.cargando = false
         this.toastr.warning('Usuario o contraseña incorrectos', 'Error!', {
           closeButton: true,
         });

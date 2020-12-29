@@ -50,7 +50,8 @@ export class SaleService {
     sale.items.forEach(item => {
       let itemSale = {
         id_product: item.product.id_product,
-        quantity: item.quantity
+        quantity: item.quantity,
+        sale_price: item.sale_price
       }
       itemsSales.push(itemSale)
     });

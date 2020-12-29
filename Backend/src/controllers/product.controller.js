@@ -17,14 +17,12 @@ export async function createProduct(req, res) {
                     name: body.name,
                     stock: 0,
                     cost_price: [],
-                    sale_price: 0
                 }
                 await Product.create(newProduct).then(newProduct => {
                     return res.status(200).json({
                         message: "Product created succesffully"
                     })
                 }).catch(error => {
-                    console.log(error);
                     return res.status(500).json({
                         message: "Error, product not created"
                     })
@@ -52,12 +50,11 @@ export async function updateProduct(req, res) {
             })
         }
         const body = req.body
-        if (body && body.id && body.name && body.code && body.sale_price && (body.stock >= 0)) {
+        if (body && body.id && body.name && body.code && (body.stock >= 0)) {
             await Product.update({
                 code: body.code,
                 name: body.name,
                 stock: body.stock,
-                sale_price: body.sale_price,
             }, {
                 where: {
                     id_product: body.id
@@ -146,7 +143,6 @@ export async function getAllProducts(req, res) {
                 products
             })
         }).catch(error => {
-            console.log(error);
             return res.status(500).json({
                 message: "Error, product not created"
             })
@@ -162,7 +158,6 @@ export async function getOneProduct(req, res) {
             })
         }
         const params = req.params
-        console.log(params.id)
         await Product.findByPk(params.id).then(product => {
             if (product) {
                 return res.status(200).json({

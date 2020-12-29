@@ -25,6 +25,7 @@ export class CashComponent implements OnInit {
   message: any
   cargandoCloseCash:boolean
   cargandoUpdateCash:boolean
+  cantidad:string
 
 
   constructor(private cashService: CashService,
@@ -35,6 +36,8 @@ export class CashComponent implements OnInit {
 
   @ViewChild('updateModal', { static: false }) public updateModal: ModalDirective;
   @ViewChild('errorModal', { static: false }) public errorModal: ModalDirective;
+  @ViewChild('countModal', { static: false }) public countModal: ModalDirective;
+
 
 
   ngOnInit(): void {
@@ -52,6 +55,13 @@ export class CashComponent implements OnInit {
         this.valueCash = cash['cash'][1].amount
       }
     })
+  }
+
+  calcular(){
+    let total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b200 * 200 + this.cash.b500 * 500 + this.cash.b1000 * 1000
+    this.cantidad = `Se ingresaron $ ${total} en el conteo de billetes`
+
+    this.countModal.show()
   }
 
   updateCashValue(form: any) {
@@ -84,7 +94,7 @@ export class CashComponent implements OnInit {
     this.cargandoCloseCash = true
     this.cashService.getValueCash().subscribe(cash => {
       this.cargandoCloseCash = false
-      this.total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b500 * 500 + this.cash.b1000 * 1000
+      this.total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b200 * 200 + this.cash.b500 * 500 + this.cash.b1000 * 1000
       if (cash['cash'][1].amount === this.total) {
         this.cashService.changeValue(cash['cash'][1].amount).subscribe(data => {
           this.toastr.success('Caja validada con exito', 'Exito!', {

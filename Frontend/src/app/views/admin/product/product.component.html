@@ -32,7 +32,6 @@
             <th style="width: 5%" class="text-center">Codigo</th>
             <th style="width: 30%" class="text-left">Nombre</th>
             <th style="width: 10%" class="text-center">Stock</th>
-            <th style="width: 15%" class="text-center">Precio Venta</th>
             <th style="width: 15%" class="text-center">Precio Costo</th>
             <th style="width: 10%" class="text-center"></th>
           </tr>
@@ -43,7 +42,6 @@
             <td class="text-center">{{ product.code }}</td>
             <td class="text-left">{{ product.name }}</td>
             <td class="text-center">{{ product.stock }}</td>
-            <td class="text-center">$ {{ product.sale_price }}</td>
             <td
               class="text-center"
               *ngIf="product.cost_price.length === 0; else valueCostPrice"
@@ -111,7 +109,6 @@
                     type="number"
                     class="form-control"
                     id="code"
-                    placeholder="1001"
                     [(ngModel)]="product.code"
                     name="code"
                     min="0"
@@ -127,7 +124,6 @@
                     type="text"
                     class="form-control"
                     id="name"
-                    placeholder="Caramelos"
                     [(ngModel)]="product.name"
                     name="name"
                   />
@@ -226,21 +222,6 @@
                   id="EditStock"
                   name="stock"
                   [(ngModel)]="productToEdit.stock"
-                  min="0"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md">
-              <div class="form-group">
-                <label for="sale_price">Precio Venta</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="EditSale_price"
-                  name="sale_price"
-                  [(ngModel)]="productToEdit.sale_price"
                   min="0"
                 />
               </div>

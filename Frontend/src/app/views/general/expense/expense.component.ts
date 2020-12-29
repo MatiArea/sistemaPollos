@@ -60,6 +60,12 @@ export class ExpenseComponent implements OnInit {
     this.viewExpenseModal.show()
   }
 
+  openNewExpense(){
+    this.expense = new Expense()
+    this.expense.date = new Date().toISOString().split('T')[0]
+    this.newExpenseModal.show()
+  }
+
   createExpense(createForm: any) {
     this.cargandoCreateExpense = true
     const newExpense = {

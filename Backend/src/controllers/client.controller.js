@@ -214,14 +214,12 @@ export async function updateBalance(req, res) {
 export async function generateListPdf(req, res) {
   jwt.verify(req.token, process.env.keyToken, async (error, user) => {
     if (error) {
-      console.log(error);
       return res.status(500).json({
         message: "Error, invalid token",
       });
     }
     let arrayClients = [];
     await Client.findAll().then(async (clients) => {
-      console.log(path.join(process.cwd(), "src/template/templateList.html"));
       var templateHtml = fs.readFileSync(
         path.join(process.cwd(), "src/template/templateList.html"),
         "utf8"
@@ -253,12 +251,10 @@ export async function generateListPdf(req, res) {
         await page.pdf(options);
         await browser.close();
       } catch (error) {
-        console.log(error);
         res.status(500).json({
           message:"Error, pdf not created"
         })
       }
-      console.log("PDF creado con exito!");
       let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
       res.download(file, (err) => {
         if (err) {

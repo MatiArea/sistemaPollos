@@ -1,7 +1,7 @@
 export class Purchase{
     id_purchase: number;
     number: number;
-    date: Date;
+    date: string;
     quantity: number;
     price: number;
     id_product;

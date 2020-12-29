@@ -49,6 +49,7 @@ export class PurchaseComponent implements OnInit {
   opentNewPurchaseModal() {
     this.idProductSelect = 0
     this.getAllProducts()
+    this.purchase.date = new Date().toISOString().split('T')[0]
     this.newPurchaseModal.show()
   }
 

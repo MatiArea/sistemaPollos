@@ -13,7 +13,7 @@ const Purchase = sequelize.define(
         },
         number: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         date: {
             type: Sequelize.DATEONLY,

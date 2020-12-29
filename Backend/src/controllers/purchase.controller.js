@@ -121,14 +121,12 @@ export async function updatePurchase(req, res) {
       if (
         body.id &&
         body.idProduct &&
-        body.number &&
         body.date &&
         body.price &&
         body.quantity
       ) {
         const newPurchase = {
           date: body.date,
-          number: body.number,
           quantity: body.quantity,
           price: body.price,
           id_product: body.idProduct,

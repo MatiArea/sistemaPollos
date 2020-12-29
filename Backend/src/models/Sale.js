@@ -16,7 +16,7 @@ const Sale = sequelize.define(
     },
     number: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     date: {
       type: Sequelize.DATEONLY,
@@ -49,9 +49,9 @@ Sale.belongsTo(Client, { foreignKey: "id_client" });
 Sale.belongsToMany(Product, { through: { model: ProductSale, unique: false } });
 Product.belongsToMany(Sale, { through:  { model: ProductSale, unique: false } });
 
-ProductSale.belongsTo(Product);
-ProductSale.belongsTo(Sale);
-Product.hasMany(ProductSale);
-Sale.hasMany(ProductSale);
+ProductSale.belongsTo(Product,{ foreignKey: "id_product" });
+ProductSale.belongsTo(Sale,{ foreignKey: "id_sale" });
+Product.hasMany(ProductSale,{ foreignKey: "id_product" });
+Sale.hasMany(ProductSale,{ foreignKey: "id_sale" });
 
 export default Sale;

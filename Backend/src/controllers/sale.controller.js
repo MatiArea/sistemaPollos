@@ -3,6 +3,8 @@ import Product from "../models/Product";
 import Client from "../models/Client";
 import Cash from "../models/Cash";
 import ProductSale from "../models/ProductSale";
+import { each } from "async";
+import { product } from "puppeteer";
 const jwt = require("jsonwebtoken");
 
 export async function createSale(req, res) {
@@ -14,13 +16,7 @@ export async function createSale(req, res) {
     }
     const body = req.body;
     if (body) {
-      if (
-        body.total >= 0 &&
-        body.id_client &&
-        body.number &&
-        body.date &&
-        body.items
-      ) {
+      if (body.total >= 0 && body.id_client && body.date && body.items) {
         var sale = {
           number: body.number,
           date: body.date,
@@ -46,7 +42,9 @@ export async function createSale(req, res) {
                       through: {
                         quantity: quantityStock,
                         cost_price: costPrice,
-                        sale_price: product.sale_price,
+                        sale_price: item.sale_price,
+                        id_product: item.id_product,
+                        id_sale: newSale.id_sale,
                       },
                     });
                   } else {
@@ -54,7 +52,7 @@ export async function createSale(req, res) {
                       through: {
                         quantity: quantity,
                         cost_price: costPrice,
-                        sale_price: product.sale_price,
+                        sale_price: item.sale_price,
                       },
                     });
                     arrayCost[0].quantity -= quantity;
@@ -126,9 +124,42 @@ export async function deleteSale(req, res) {
     }
     let params = req.params;
     if (params.id) {
-      Sale.findByPk(params.id)
+      Sale.findByPk(params.id, {
+        include: [{ model: ProductSale }],
+      })
         .then(async (saleToDelete) => {
-          await Cash.findOne().then((cash) => {
+          each(saleToDelete.productsales, (item) => {
+            Product.findByPk(item.id_product).then((productToModify) => {
+              let arrayCost = [];
+              productToModify.cost_price.forEach((element) => {
+                arrayCost.push(element);
+              });
+              arrayCost.unshift({
+                quantity: item.quantity,
+                price: item.cost_price,
+              });
+              productToModify
+                .update(
+                  {
+                    stock: (productToModify.stock += item.quantity),
+                    cost_price: arrayCost,
+                  },
+                  {
+                    where: {
+                      id_product: item.id_product,
+                    },
+                  }
+                )
+                .then((data) => {
+                  item.destroy().then();
+                });
+            });
+          });
+          await Cash.findOne({
+            where: {
+              init: false,
+            },
+          }).then((cash) => {
             if (cash) {
               cash.amount -= saleToDelete.payment;
               cash.save().then(async (cashSave) => {
@@ -178,17 +209,16 @@ export async function getOneSale(req, res) {
       });
     }
     let params = req.params;
-    console.log(params);
     if (params) {
       Sale.findByPk(params.id, {
         include: [
           { model: Client, attributes: ["name"] },
-          { model: Product, attributes: ["name", "sale_price", "code"] },
-          { model: ProductSale}
+          { model: Product, attributes: ["id_product", "name", "code"] },
+          { model: ProductSale },
         ],
         through: {
           model: ProductSale,
-          unique: false
+          unique: false,
         },
       })
         .then((sale) => {
@@ -218,9 +248,7 @@ export async function getAllSales(req, res) {
     }
     Sale.findAll({
       include: [Client],
-      order: [
-        ['date', 'DESC'],
-    ],
+      order: [["date", "DESC"]],
     }).then((sales) => {
       return res.status(200).json({
         sales,

@@ -138,8 +138,6 @@ export async function weekReport(req, res) {
               });
           })
           .catch((error) => {
-            console.log(error);
-
             return res.status(500).json({
               message: "Error not information",
             });

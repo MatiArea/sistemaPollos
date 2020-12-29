@@ -101,6 +101,24 @@
       <fieldset class="form-group">
         <div class="input-group col-md-11">
           <label class="col-md-3 col-form-label" for="total"
+            >Billetes de 200</label
+          >
+          <span class="input-group-prepend"
+            ><span class="input-group-text"
+              ><i class="fa fa-usd"></i></span></span
+          ><input
+            type="number"
+            class="form-control"
+            id="cant200"
+            name="b200"
+            min="0"
+            [(ngModel)]="cash.b200"
+          />
+        </div>
+      </fieldset>
+      <fieldset class="form-group">
+        <div class="input-group col-md-11">
+          <label class="col-md-3 col-form-label" for="total"
             >Billetes de 500</label
           >
           <span class="input-group-prepend"
@@ -135,6 +153,9 @@
         </div>
       </fieldset>
       <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="calcular()">
+          Calcular
+        </button>
         <button type="submit" class="btn btn-success">
           Cierre de caja
           <span
@@ -255,3 +276,35 @@
     </div>
   </div>
 </div>
+
+<!--------------------------------------CONTAR MODAL-------------------------------------------------------->
+<div
+  bsModal
+  #countModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Cantidad Ingresada</h4>
+      </div>
+      <div class="d-flex justify-content-center m-5 font-weight-bold lead">
+        {{ cantidad }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="countModal.hide()"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

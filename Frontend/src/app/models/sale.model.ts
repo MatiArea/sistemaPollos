@@ -1,6 +1,6 @@
 export class Sale{
     number:number;
-    date:Date;
+    date:string;
     id_client:number;
     total:number;
     payment:number;

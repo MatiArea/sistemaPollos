@@ -54,6 +54,7 @@ export class MovementComponent implements OnInit {
   openNewMovementModal() {
     this.getAllClients()
     this.clientId = 0
+    this.movement.date = new Date().toISOString().split('T')[0]
     this.newMovementModal.show()
   }
 

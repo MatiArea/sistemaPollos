@@ -57,7 +57,6 @@ export class ReportComponent implements OnInit {
     this.total = new Report()
 
     this.reportService.dayReport(this.day).subscribe(data => {
-      console.log(data)
       each(data['sales'], (sale) => {
         this.total.totalSales += sale.total
         this.total.totalPayment += sale.payment

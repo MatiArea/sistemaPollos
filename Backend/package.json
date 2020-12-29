@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "async": "^3.2.0",
     "bcrypt": "^5.0.0",
     "cryptr": "^6.0.2",
     "dotenv": "^8.2.0",

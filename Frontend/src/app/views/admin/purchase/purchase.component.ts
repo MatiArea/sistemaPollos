@@ -49,6 +49,7 @@ export class PurchaseComponent implements OnInit {
   opentNewPurchaseModal() {
     this.idProductSelect = 0
     this.getAllProducts()
+    this.purchase.date = new Date().toISOString().split('T')[0]
     this.newPurchaseModal.show()
   }
 
@@ -60,7 +61,6 @@ export class PurchaseComponent implements OnInit {
     this.cargandoCreatePurchase = true
     const purchase = {
       date: this.purchase.date,
-      number: this.purchase.number,
       price: this.purchase.price,
       quantity: this.purchase.quantity,
       idProduct: this.idProductSelect

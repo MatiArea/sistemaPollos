@@ -58,7 +58,6 @@ export async function createMovement(req, res) {
 }
 
 export async function updateMovement(req, res) {
-  console.log("HOLA RESPUESTA");
 }
 
 export async function deleteMovement(req, res) {

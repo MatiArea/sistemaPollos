@@ -25,11 +25,7 @@ const Product = sequelize.define(
     cost_price: {
       type: Sequelize.JSON,
       allowNull: false,
-    },
-    sale_price: {
-      type: Sequelize.FLOAT,
-      allowNull: false,
-    },
+    }
   },
   {
     freezeTableName: true,
