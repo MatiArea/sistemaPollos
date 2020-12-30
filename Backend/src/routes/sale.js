@@ -6,7 +6,7 @@ const router = Router();
 import { validateToken } from '../middlewares/auth'
 
 /*-----GET-----*/
-router.get('/',validateToken,getAllSales);
+router.get('/:page',validateToken,getAllSales);
 router.get('/:id',validateToken,getOneSale);
 
 /*-----POST-----*/

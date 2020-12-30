@@ -53,7 +53,7 @@ export async function updateClient(req, res) {
       });
     }
     const body = req.body;
-    if (body.id && body.name && body.address && body.balance) {
+    if (body.id && body.name && body.address && body.balance >= 0) {
       await Client.findOne({
         where: {
           id_client: body.id,
@@ -131,6 +131,26 @@ export async function deleteClient(req, res) {
   });
 }
 
+export async function getAllClientsTable(req, res) {
+  jwt.verify(req.token, process.env.keyToken, async (error, user) => {
+    if (error) {
+      return res.status(500).json({
+        message: "Error, invalid token",
+      });
+    }
+    let offset = req.params.page * 10
+    await Client.findAll({
+      offset,
+      limit: 10,
+      order: [["name", "ASC"]],
+    }).then((clients) => {
+      return res.status(200).json({
+        clients,
+      });
+    });
+  });
+}
+
 export async function getAllClients(req, res) {
   jwt.verify(req.token, process.env.keyToken, async (error, user) => {
     if (error) {
@@ -138,8 +158,10 @@ export async function getAllClients(req, res) {
         message: "Error, invalid token",
       });
     }
+    let offset = req.params.page * 10
     await Client.findAll({
       order: [["name", "ASC"]],
+      atributtes:["id_client","name"]
     }).then((clients) => {
       return res.status(200).json({
         clients,
@@ -252,8 +274,8 @@ export async function generateListPdf(req, res) {
         await browser.close();
       } catch (error) {
         res.status(500).json({
-          message:"Error, pdf not created"
-        })
+          message: "Error, pdf not created",
+        });
       }
       let file = path.join(process.cwd(), "src/template/listaClientes.pdf");
       res.download(file, (err) => {

@@ -14,14 +14,12 @@ export async function createPurchase(req, res) {
     if (body) {
       if (
         body.idProduct &&
-        body.number &&
         body.date &&
         body.price >= 0 &&
         body.quantity >= 0
       ) {
         const purchase = {
           date: body.date,
-          number: body.number,
           quantity: body.quantity,
           price: body.price,
           id_product: body.idProduct,
@@ -287,7 +285,10 @@ export async function getAllPurchases(req, res) {
         message: "Error, invalid token",
       });
     }
+    let offset = req.params.page * 10
     await Purchase.findAll({
+      offset,
+      limit:10,
       include: [Product],
       order: [
         ['date', 'DESC'],

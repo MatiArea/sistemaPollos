@@ -1,11 +1,12 @@
 import { Router } from "express";
 const router = Router();
 
-import { createProduct, deleteProduct, getAllProducts, updateProduct, getOneProduct} from '../controllers/product.controller'
+import { createProduct, deleteProduct, getAllProducts, updateProduct, getOneProduct, getAllProductsTable} from '../controllers/product.controller'
 import { validateToken } from "../middlewares/auth";
 
 /*-----GET-----*/
 router.get('/',validateToken, getAllProducts);
+router.get('/:page',validateToken, getAllProductsTable);
 router.get('/:id',validateToken, getOneProduct);
 
 

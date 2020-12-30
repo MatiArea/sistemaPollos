@@ -5,7 +5,7 @@ import { createExpense, deleteExpense, getAllExpenses, getOneExpense, updateExpe
 import { validateToken } from '../middlewares/auth'
 
 /*-----GET-----*/
-router.get('/',validateToken,getAllExpenses);
+router.get('/:page',validateToken,getAllExpenses);
 router.get('/:id',validateToken,getOneExpense);
 
 /*-----POST-----*/

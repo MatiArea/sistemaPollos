@@ -200,7 +200,12 @@ export async function getAllExpenses(req, res) {
         message: "Error, invalid token",
       });
     }
-    await Expense.findAll({ order: [["date", "DESC"]] }).then((expenses) => {
+    let offset = req.params.page * 10;
+    await Expense.findAll({
+      offset,
+      limit: 10,
+      order: [["date", "DESC"]],
+    }).then((expenses) => {
       return res.status(200).json({
         expenses,
       });
