@@ -13,7 +13,7 @@ export class MovementService {
   constructor(private http: HttpClient) {
   }
 
-  getAllMovements() {
+  getAllMovements(page:number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -21,7 +21,7 @@ export class MovementService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/movement`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/movement/${page}`, { headers }).pipe(data => {
       return data
     });
   }
