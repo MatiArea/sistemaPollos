@@ -5,7 +5,7 @@ import { validateToken } from "../middlewares/auth";
 import { createMovement, deleteMovement, getAllMovements, getOneMovement, updateMovement } from "../controllers/movement.controller";
 
 /*-----GET-----*/
-router.get('/',validateToken, getAllMovements);
+router.get('/:page',validateToken, getAllMovements);
 router.get('/:id',validateToken, getOneMovement);
 
 
