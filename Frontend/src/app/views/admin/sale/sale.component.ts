@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +9,9 @@ import { ClientService } from '../../../services/client.service';
 import { ProductService } from '../../../services/product.service';
 import { SaleService } from '../../../services/sale.service';
 import { each, forEachOf } from 'async'
+import localeIt from '@angular/common/locales/it'
+registerLocaleData(localeIt, 'it');
+
 
 @Component({
   selector: 'app-sale',
@@ -27,26 +31,36 @@ export class SaleComponent implements OnInit {
   saleView: SaleView
   cargandoCreateSale: boolean
   sale_price: number
-
+  page: number
+  
   constructor(private saleService: SaleService, private router: Router, private productService: ProductService, private clientService: ClientService, private toastr: ToastrService) {
     this.sale = new Sale()
     this.saleView = new SaleView()
   }
-
-
+  
+  
   @ViewChild('viewSaleModal', { static: false }) public viewSaleModal: ModalDirective;
   @ViewChild('newSaleModal', { static: false }) public newSaleModal: ModalDirective;
-
+  
   ngOnInit(): void {
+    this.page = 0
     this.getAllSales()
   }
 
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllSales()
+    }
+  }
+  
   getAllSales() {
     this.sales = []
-    this.saleService.getAllsales().subscribe(sales => {
+    this.saleService.getAllsales(this.page).subscribe(sales => {
       this.sales = sales['sales']
     })
   }
+
 
   getAllProducts() {
     this.products = []

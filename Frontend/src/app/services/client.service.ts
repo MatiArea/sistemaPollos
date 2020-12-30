@@ -14,6 +14,19 @@ export class ClientService {
   constructor(private http: HttpClient) {
   }
 
+  getAllClientsTable(page:number) {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString
+    })
+
+    return this.http.get(`${this.url}/client/${page}`, { headers }).pipe(data => {
+      return data
+    });
+  }
+
   getAllClients() {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token

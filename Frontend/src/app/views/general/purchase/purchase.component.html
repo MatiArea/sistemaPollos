@@ -44,11 +44,22 @@
             <td class="text-center">{{ purchase.product.name }}</td>
             <td class="text-center">{{ purchase.quantity }}</td>
             <td class="text-center">
-              ${{ purchase.quantity * purchase.price }}
+              ${{ purchase.quantity * purchase.price | currency: '':'':'.2-2':'it' }}
             </td>
           </tr>
         </tbody>
       </table>
+      <ul class="pagination">
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page - 1)">Anterior</a>
+        </li>
+        <li class="page-item active">
+          <a class="page-link">{{ page + 1 }}</a>
+        </li>
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page + 1)">Siguiente</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -148,7 +159,7 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success">
+          <button type="submit" class="btn btn-success" [disabled]="this.cargandoCreatePurchase === true">
             Crear Compra
             <span
               class="spinner-border spinner-border-sm"

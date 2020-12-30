@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Form } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 
 @Component({
@@ -16,8 +18,9 @@ export class ProductComponent implements OnInit {
   product: any;
   productToEdit: any;
   products: any;
-  cargandoCreateProduct:boolean
-  cargandoUpdateProduct:boolean
+  cargandoCreateProduct: boolean
+  cargandoUpdateProduct: boolean
+  page: number
 
   constructor(private productoService: ProductService, private router: Router, private toastr: ToastrService) {
     this.product = new Product()
@@ -30,13 +33,20 @@ export class ProductComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.page = 0
     this.getAllProducts();
   }
 
-  getAllProducts() {
-    this.productoService.getAllProducts().subscribe(products => {
-      this.products = products['products']
+  changePage(numPage: number) {
+    if (numPage >= 0) {
+      this.page = numPage
+      this.getAllProducts()
+    }
+  }
 
+  getAllProducts() {
+    this.productoService.getAllProductsTable(this.page).subscribe(products => {
+      this.products = products['products']
     });
   }
 
@@ -51,6 +61,7 @@ export class ProductComponent implements OnInit {
       this.newProductModal.hide();
       createForm.reset();
       this.product = new Product();
+      this.page = 0
       this.getAllProducts();
 
     }, (error) => {
@@ -85,6 +96,7 @@ export class ProductComponent implements OnInit {
       this.editProductModal.hide();
       editForm.reset();
       this.productToEdit = new Product();
+      this.page = 0
       this.getAllProducts();
 
     }, (error) => {

@@ -8,6 +8,9 @@ import { ClientService } from '../../../services/client.service';
 import { ProductService } from '../../../services/product.service';
 import { SaleService } from '../../../services/sale.service';
 import { each,forEachOf } from 'async'
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-sale',
@@ -27,6 +30,7 @@ export class SaleComponent implements OnInit {
   id_client: number
   saleView: SaleView
   cargandoCreateSale: boolean
+  page:number
 
   constructor(private saleService: SaleService, private productService: ProductService, private router: Router, private clientService: ClientService, private toastr: ToastrService) {
     this.sale = new Sale()
@@ -38,12 +42,20 @@ export class SaleComponent implements OnInit {
   @ViewChild('newSaleModal', { static: false }) public newSaleModal: ModalDirective;
 
   ngOnInit(): void {
+    this.page = 0
     this.getAllSales()
+  }
+
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllSales()
+    }
   }
 
   getAllSales() {
     this.sales = []
-    this.saleService.getAllsales().subscribe(sales => {
+    this.saleService.getAllsales(this.page).subscribe(sales => {
       this.sales = sales['sales']
     })
   }

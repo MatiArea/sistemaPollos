@@ -13,7 +13,7 @@ export class ExpenseService {
   constructor(private http: HttpClient) {
   }
 
-  getAllExpenses() {
+  getAllExpenses(page:number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -21,7 +21,7 @@ export class ExpenseService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/expense`, { headers }).pipe(expenses => {
+    return this.http.get(`${this.url}/expense/${page}`, { headers }).pipe(expenses => {
       return expenses
     });
   }

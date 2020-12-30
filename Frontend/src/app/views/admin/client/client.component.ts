@@ -6,7 +6,9 @@ import { Client } from '../../../models/client.model';
 import { ClientService } from '../../../services/client.service';
 import { saveAs } from "file-saver"
 import { Router } from '@angular/router';
-// const FileSaver = require('file-saver');
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-client',
@@ -21,6 +23,7 @@ export class ClientComponent implements OnInit {
   cargandoDownload:boolean;
   cargandoCreateClient:boolean;
   cargandoUpdateClient:boolean;
+  page:number;
 
   constructor(private clientService:ClientService,private router:Router,private toastr:ToastrService) { 
     this.client = new Client()
@@ -32,13 +35,21 @@ export class ClientComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.page = 0
     this.getAllClients();
   }
   
   getAllClients(){
-    this.clientService.getAllClients().subscribe(clients => {
+    this.clientService.getAllClientsTable(this.page).subscribe(clients => {
       this.clients = clients['clients']
     });
+  }
+
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllClients()
+    }
   }
 
   createClient(createForm:NgForm){

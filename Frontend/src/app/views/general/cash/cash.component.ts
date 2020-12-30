@@ -3,11 +3,10 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Cash } from '../../../models/cash.model';
 import { CashService } from '../../../services/cash.service';
-import { MovementService } from '../../../services/movement.service';
-import { PurchaseService } from '../../../services/purchase.service';
-import { SaleService } from '../../../services/sale.service';
-import { ExpenseService } from '../../../services/expense.service';
 import { Router } from '@angular/router';
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-cash',

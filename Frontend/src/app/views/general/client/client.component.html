@@ -54,10 +54,21 @@
           <tr *ngFor="let client of clients">
             <td class="text-center">{{ client.name }}</td>
             <td class="text-center">{{ client.address }}</td>
-            <td class="text-center">${{ client.balance }}</td>
+            <td class="text-center">${{ client.balance | currency: '':'':'.2-2':'it' }}</td>
           </tr>
         </tbody>
       </table>
+      <ul class="pagination">
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page - 1)">Anterior</a>
+        </li>
+        <li class="page-item active">
+          <a class="page-link">{{ page + 1 }}</a>
+        </li>
+        <li class="page-item" style="cursor: pointer">
+          <a class="page-link" (click)="changePage(page + 1)">Siguiente</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
@@ -139,6 +150,7 @@
             type="submit"
             class="btn btn-success"
             [disabled]="!createForm.valid"
+            [disabled]="this.cargandoCreateClient === true"
           >
             Crear cliente
             <span
@@ -241,6 +253,7 @@
             type="submit"
             class="btn btn-success"
             [disabled]="!editForm.valid"
+            [disabled]="this.cargandoUpdateClient === true"
           >
             Actualizar cliente
             <span

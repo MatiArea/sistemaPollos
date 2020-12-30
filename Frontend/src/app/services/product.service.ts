@@ -26,6 +26,19 @@ export class ProductService {
     });
   }
 
+  getAllProductsTable(page:number) {
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString
+    })
+
+    return this.http.get(`${this.url}/product/${page}`, { headers }).pipe(data => {
+      return data
+    });
+  }
+
   createProduct(product:any){
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
@@ -43,6 +56,8 @@ export class ProductService {
       return data
     })
   }
+
+  
 
   getOneProduct(id:number){
     const token = sessionStorage.getItem('token');

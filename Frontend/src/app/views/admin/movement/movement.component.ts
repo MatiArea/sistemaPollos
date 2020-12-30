@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { Movement } from '../../../models/movement.model';
 import { ClientService } from '../../../services/client.service';
 import { MovementService } from '../../../services/movement.service';
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+import { NgForm } from '@angular/forms';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-movement',
@@ -20,6 +23,7 @@ export class MovementComponent implements OnInit {
   clientId: number
   clients: []
   cargandoMovement:boolean
+  page:number
 
   constructor(private clientService: ClientService, private router: Router, private toastr: ToastrService, private movementService: MovementService) {
 
@@ -38,6 +42,13 @@ export class MovementComponent implements OnInit {
     this.clientService.getAllClients().subscribe(clients => {
       this.clients = clients['clients']
     });
+  }
+
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllMovements()
+    }
   }
 
   getAllMovements() {

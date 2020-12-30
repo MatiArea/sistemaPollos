@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Movement } from '../../../models/movement.model';
 import { ClientService } from '../../../services/client.service';
 import { MovementService } from '../../../services/movement.service';
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-movement',
@@ -20,6 +23,7 @@ export class MovementComponent implements OnInit {
   clientId: number
   clients: []
   cargandoCreateMovement:boolean
+  page:number
 
   constructor(private clientService: ClientService, private router: Router, private toastr: ToastrService, private movementService: MovementService) {
 
@@ -32,6 +36,13 @@ export class MovementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllMovements()
+  }
+
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllMovements()
+    }
   }
 
   getAllClients() {

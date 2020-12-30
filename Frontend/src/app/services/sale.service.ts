@@ -12,7 +12,7 @@ export class SaleService {
   constructor( private http:HttpClient) { 
   }
 
-  getAllsales() {
+  getAllsales(page:number) {
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -20,7 +20,7 @@ export class SaleService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/sale`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/sale/${page}`, { headers }).pipe(data => {
       return data
     });
   }

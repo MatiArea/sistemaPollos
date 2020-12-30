@@ -6,7 +6,9 @@ import { Client } from '../../../models/client.model';
 import { ClientService } from '../../../services/client.service';
 import { saveAs } from "file-saver"
 import { Router } from '@angular/router';
-// const FileSaver = require('file-saver');
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-client',
@@ -21,6 +23,7 @@ export class ClientComponent implements OnInit {
   cargandoCreateClient:boolean
   cargandoUpdateClient:boolean
   cargandoDownload:boolean
+  page:number
 
   constructor(private clientService: ClientService, private router: Router, private toastr: ToastrService) {
     this.client = new Client()
@@ -32,11 +35,19 @@ export class ClientComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getAllClients();
+    this.page = 0
+    this.getAllClientsTable();
   }
 
-  getAllClients() {
-    this.clientService.getAllClients().subscribe(clients => {
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllClientsTable()
+    }
+  }
+
+  getAllClientsTable() {
+    this.clientService.getAllClientsTable(this.page).subscribe(clients => {
       this.clients = clients['clients']
     });
   }
@@ -52,7 +63,7 @@ export class ClientComponent implements OnInit {
       this.newClientModal.hide();
       createForm.reset();
       this.client = new Client();
-      this.getAllClients();
+      this.getAllClientsTable();
 
     }, (error) => {
       this.cargandoCreateClient = false
@@ -86,7 +97,7 @@ export class ClientComponent implements OnInit {
       this.editClientModal.hide();
       editForm.reset();
       this.clientToEdit = new Client();
-      this.getAllClients();
+      this.getAllClientsTable();
 
     }, (error) => {
       if (error) {
@@ -108,7 +119,7 @@ export class ClientComponent implements OnInit {
         closeButton: true,
         progressBar: true
       });
-      this.getAllClients();
+      this.getAllClientsTable();
     }, (error) => {
       if (error) {
         if (error.code === 403) {

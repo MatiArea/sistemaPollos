@@ -28,7 +28,7 @@ export class PurchaseService {
     })
   }
   
-  getAllPurchase(){
+  getAllPurchase(page:number){
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -36,7 +36,7 @@ export class PurchaseService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/purchase`,{headers}).pipe(purchases =>{
+    return this.http.get(`${this.url}/purchase/${page}`,{headers}).pipe(purchases =>{
       return purchases
     })
   }

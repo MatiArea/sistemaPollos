@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Purchase } from '../../../models/purchase.model';
 import { ProductService } from '../../../services/product.service';
 import { PurchaseService } from '../../../services/purchase.service';
+import localeIt from '@angular/common/locales/it'
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeIt, 'it');
 
 @Component({
   selector: 'app-purchase',
@@ -24,12 +27,20 @@ export class PurchaseComponent implements OnInit {
   total: number
   purchases: any
   cargandoCreatePurchase:boolean
+  page:number
 
   @ViewChild('editPurchaseModal', { static: false }) public editPurchaseModal: ModalDirective;
   @ViewChild('newPurchaseModal', { static: false }) public newPurchaseModal: ModalDirective;
 
   ngOnInit(): void {
     this.getAllPurchase()
+  }
+
+  changePage(numPage:number){
+    if(numPage >= 0){
+      this.page = numPage
+      this.getAllPurchase()
+    }
   }
 
   getAllProducts() {
@@ -40,7 +51,7 @@ export class PurchaseComponent implements OnInit {
 
   getAllPurchase() {
     this.purchases = []
-    this.purchaseService.getAllPurchase().subscribe(data => {
+    this.purchaseService.getAllPurchase(this.page).subscribe(data => {
       this.purchases = data['purchases']
     })
 
