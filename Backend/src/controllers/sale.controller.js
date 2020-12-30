@@ -246,7 +246,7 @@ export async function getAllSales(req, res) {
         message: "Error, invalid token",
       });
     }
-    let offset = req.params.page
+    let offset = req.params.page * 10
     Sale.findAll({
       offset,
       limit:10,

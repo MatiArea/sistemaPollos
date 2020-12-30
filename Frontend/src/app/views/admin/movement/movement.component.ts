@@ -35,6 +35,7 @@ export class MovementComponent implements OnInit {
   @ViewChild('newMovementModal', { static: false }) public newMovementModal: ModalDirective;
 
   ngOnInit(): void {
+    this.page = 0
     this.getAllMovements()
   }
 

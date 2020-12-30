@@ -139,7 +139,10 @@ export async function getAllMovements(req, res) {
         message: "Error, invalid token",
       });
     }
+    let offset = req.params.page * 10
     await Movement.findAll({
+      offset,
+      limit:10,
       include: { model: Client },
       order: [["date", "DESC"]],
     }).then((movements) => {
