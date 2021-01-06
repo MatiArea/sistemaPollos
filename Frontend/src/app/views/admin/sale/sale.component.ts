@@ -82,7 +82,6 @@ export class SaleComponent implements OnInit {
 
     this.saleView.items = []
     this.saleService.getOneSale(idSale).subscribe(sale => {
-      this.saleView.number = sale['sale'].number
       this.saleView.date = sale['sale'].date.split('T')[0]
       this.saleView.name_client = sale['sale'].client.name
       each(sale['sale'].productsales, (itemProducto) => {
