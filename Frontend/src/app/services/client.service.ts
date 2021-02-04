@@ -22,7 +22,7 @@ export class ClientService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/client/${page}`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/client/all/${page}`, { headers }).pipe(data => {
       return data
     });
   }

@@ -36,7 +36,7 @@ export class PurchaseService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/purchase/${page}`,{headers}).pipe(purchases =>{
+    return this.http.get(`${this.url}/purchase/all/${page}`,{headers}).pipe(purchases =>{
       return purchases
     })
   }

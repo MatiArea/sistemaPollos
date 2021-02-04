@@ -8,7 +8,6 @@ import { SaleComponent } from './sale/sale.component';
 import { PurchaseComponent } from './purchase/purchase.component'
 import { MovementComponent } from './movement/movement.component';
 import { ExpenseComponent } from './expense/expense.component';
-import { CashComponent } from './cash/cash.component';
 
 
 export const routes: Routes = [
@@ -59,14 +58,14 @@ export const routes: Routes = [
     data: {
       title: 'Gastos'
     }
-  },
-  {
-    path: 'caja',
-    component: CashComponent,
-    data: {
-      title: 'Caja'
-    }
   }
+  // {
+  //   path: 'caja',
+  //   component: CashComponent,
+  //   data: {
+  //     title: 'Caja'
+  //   }
+  // }
 ];
 
 @NgModule({

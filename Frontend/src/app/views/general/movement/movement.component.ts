@@ -52,7 +52,7 @@ export class MovementComponent implements OnInit {
   }
 
   getAllMovements() {
-    this.movementService.getAllMovements().subscribe(movements => {
+    this.movementService.getAllMovements(this.page).subscribe(movements => {
       this.movements = movements['movements']
     })
 

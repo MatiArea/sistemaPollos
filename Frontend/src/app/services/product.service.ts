@@ -34,7 +34,7 @@ export class ProductService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/product/${page}`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/product/all/${page}`, { headers }).pipe(data => {
       return data
     });
   }
