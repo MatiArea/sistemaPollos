@@ -21,7 +21,7 @@ export class MovementService {
       'Authorization': tokenString
     })
 
-    return this.http.get(`${this.url}/movement/${page}`, { headers }).pipe(data => {
+    return this.http.get(`${this.url}/movement/all/${page}`, { headers }).pipe(data => {
       return data
     });
   }

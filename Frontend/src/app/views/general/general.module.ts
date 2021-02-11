@@ -5,7 +5,6 @@ import { SaleComponent } from './sale/sale.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { MovementComponent } from './movement/movement.component';
 import { ExpenseComponent } from './expense/expense.component';
-import { CashComponent } from './cash/cash.component';
 import { GeneralRoutingModule } from './general.routes';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -19,7 +18,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     PurchaseComponent,
     MovementComponent,
     ExpenseComponent,
-    CashComponent,    
   ],
   imports: [
     CommonModule,

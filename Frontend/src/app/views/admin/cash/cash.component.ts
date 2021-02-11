@@ -18,22 +18,25 @@ export class CashComponent implements OnInit {
   valueCash: number
   valueCashInit: number
   value: number
+  valueDelete: number
   cash: Cash
   total: number
   difValue: number
   message: any
-  cargandoCloseCash:boolean
-  cargandoUpdateCash:boolean
-  cantidad:string
+  cargandoCloseCash: boolean
+  cargandoUpdateCash: boolean
+  cargandoDeleteCash: boolean
+  cantidad: string
 
 
   constructor(private cashService: CashService,
-    private router:Router,
+    private router: Router,
     private toastr: ToastrService) {
     this.cash = new Cash()
   }
 
-  @ViewChild('updateModal', { static: false }) public updateModal: ModalDirective;
+  @ViewChild('addModal', { static: false }) public addModal: ModalDirective;
+  @ViewChild('deleteModal', { static: false }) public deleteModal: ModalDirective;
   @ViewChild('errorModal', { static: false }) public errorModal: ModalDirective;
   @ViewChild('countModal', { static: false }) public countModal: ModalDirective;
 
@@ -45,27 +48,25 @@ export class CashComponent implements OnInit {
 
   getValueCash() {
     this.cashService.getValueCash().subscribe(cash => {
-      if (cash['cash'].length === 0) {
-        this.valueCash = 0
-        this.valueCashInit = 0
+      if (cash['cash']) {
+        this.valueCash = cash['cash'].amount
       }
       else {
-        this.valueCashInit = cash['cash'][0].amount
-        this.valueCash = cash['cash'][1].amount
+        this.valueCash = 0
       }
     })
   }
 
-  calcular(){
+  calcular() {
     let total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b200 * 200 + this.cash.b500 * 500 + this.cash.b1000 * 1000
     this.cantidad = `Se ingresaron $ ${total} en el conteo de billetes`
 
     this.countModal.show()
   }
 
-  updateCashValue(form: any) {
+  addCashValue(form: any) {
     this.cargandoUpdateCash = true
-    this.cashService.changeValue(this.value).subscribe(cash => {
+    this.cashService.addCash(this.value).subscribe(cash => {
       this.cargandoUpdateCash = false
       this.toastr.success('Caja actualizada con exito', 'Exito!', {
         closeButton: true,
@@ -73,10 +74,38 @@ export class CashComponent implements OnInit {
       });
       this.getValueCash();
       form.reset()
-      this.updateModal.hide()
+      this.value = 0
+      this.addModal.hide()
 
     }, (error) => {
       this.cargandoUpdateCash = false
+      if (error) {
+        if (error.code === 403) {
+          this.router.navigate(['login']);
+        }
+        this.toastr.error('No se pude actualizar la caja', 'Error!', {
+          closeButton: true,
+          progressBar: true
+        });
+      }
+    })
+  }
+
+  withdrawMoneyValue(form: any) {
+    this.cargandoDeleteCash = true
+    this.cashService.removeCash(this.valueDelete).subscribe(cash => {
+      this.cargandoDeleteCash = false
+      this.toastr.success('Caja actualizada con exito', 'Exito!', {
+        closeButton: true,
+        progressBar: true
+      });
+      this.getValueCash();
+      form.reset()
+      this.valueDelete = 0
+      this.deleteModal.hide()
+
+    }, (error) => {
+      this.cargandoDeleteCash = false
       if (error) {
         if (error.code === 403) {
           this.router.navigate(['login']);
@@ -95,25 +124,25 @@ export class CashComponent implements OnInit {
       this.cargandoCloseCash = false
       this.total = this.cash.b10 * 10 + this.cash.b20 * 20 + this.cash.b50 * 50 + this.cash.b100 * 100 + this.cash.b200 * 200 + this.cash.b500 * 500 + this.cash.b1000 * 1000
       if (cash['cash'][1].amount === this.total) {
-        this.cashService.changeValue(cash['cash'][1].amount).subscribe(data => {
-          this.toastr.success('Caja validada con exito', 'Exito!', {
-            closeButton: true,
-            progressBar: true
-          });
-          this.getValueCash();
-          form.reset()
-          this.cash = new Cash()
-        }, (error) => {
-          if (error) {
-            if (error.code === 403) {
-              this.router.navigate(['login']);
-            }
-            this.toastr.error('No se pude validar la caja', 'Error!', {
-              closeButton: true,
-              progressBar: true
-            });
-          }
-        })
+        // this.cashService.changeValue(cash['cash'][1].amount).subscribe(data => {
+        //   this.toastr.success('Caja validada con exito', 'Exito!', {
+        //     closeButton: true,
+        //     progressBar: true
+        //   });
+        //   this.getValueCash();
+        //   form.reset()
+        //   this.cash = new Cash()
+        // }, (error) => {
+        //   if (error) {
+        //     if (error.code === 403) {
+        //       this.router.navigate(['login']);
+        //     }
+        //     this.toastr.error('No se pude validar la caja', 'Error!', {
+        //       closeButton: true,
+        //       progressBar: true
+        //     });
+        //   }
+        // })
       }
       else {
         this.cargandoCloseCash = false

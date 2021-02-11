@@ -26,7 +26,7 @@ export class CashService {
     });
   }
 
-  changeValue(cashAmount:number){
+  addCash(cashAmount:number){
     const token = sessionStorage.getItem('token');
     const tokenString = 'Bearer ' + token
 
@@ -38,7 +38,24 @@ export class CashService {
       amount:cashAmount
     }
     
-    return this.http.put(`${this.url}/cash/update`,body,{ headers }).pipe(data => {
+    return this.http.put(`${this.url}/cash/add`,body,{ headers }).pipe(data => {
+      return data
+    });
+  }
+
+  removeCash(cashAmount:number){
+    const token = sessionStorage.getItem('token');
+    const tokenString = 'Bearer ' + token
+
+    const headers = new HttpHeaders({
+      'Authorization': tokenString
+    })
+
+    const body = {
+      amount:cashAmount
+    }
+    
+    return this.http.put(`${this.url}/cash/remove`,body,{ headers }).pipe(data => {
       return data
     });
   }
