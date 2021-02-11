@@ -33,6 +33,7 @@ export class PurchaseComponent implements OnInit {
   @ViewChild('newPurchaseModal', { static: false }) public newPurchaseModal: ModalDirective;
 
   ngOnInit(): void {
+    this.page = 0
     this.getAllPurchase()
   }
 

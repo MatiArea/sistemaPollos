@@ -1,7 +1,5 @@
-import { Sequelize } from "sequelize";
-import { sequelize } from "../BaseDeDatos/database";
-import Product from "../models/Product";
-import Sale from "./Sale";
+import Sequelize from "sequelize";
+import sequelize from "../BaseDeDatos/database";
 
 const ProductSale = sequelize.define(
   "productsale",

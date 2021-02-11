@@ -3,7 +3,7 @@ import Client from "../models/Client";
 import Product from "../models/Product";
 
 import ProductSale from "../models/ProductSale";
-import { sequelize } from "../BaseDeDatos/database";
+import sequelize from "../BaseDeDatos/database";
 
 const Sale = sequelize.define(
   "sale",

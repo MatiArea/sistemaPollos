@@ -1,5 +1,5 @@
-import {  Sequelize  } from 'sequelize';
-import { sequelize } from "../BaseDeDatos/database";
+import Sequelize from 'sequelize';
+import sequelize from "../BaseDeDatos/database";
 
 
 const Expense = sequelize.define(

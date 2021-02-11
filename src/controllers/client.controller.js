@@ -1,7 +1,6 @@
 import Client from "../models/Client";
 const jwt = require("jsonwebtoken");
 var fs = require("fs");
-var pdf = require("html-pdf");
 const handlebars = require("handlebars");
 const puppeteer = require("puppeteer");
 const path = require("path");

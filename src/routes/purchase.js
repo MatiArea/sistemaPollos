@@ -5,7 +5,7 @@ import { createPurchase, deletePurchase, getAllPurchases, updatePurchase } from 
 import { validateToken } from "../middlewares/auth";
 
 /*-----GET-----*/
-router.get('/:page',validateToken,getAllPurchases);
+router.get('/all/:page',validateToken,getAllPurchases);
 
 /*-----POST-----*/
 router.post('/new',validateToken,createPurchase);

@@ -32,10 +32,10 @@ export const generalNavItems: INavData[] = [
     name: 'Gastos',
     url: '/general/gastos',
     icon: 'fas fa-credit-card'
-  },
-  {
-    name: 'Caja',
-    url: '/general/caja',
-    icon: 'fas fa-cash-register'
   }
+  // {
+  //   name: 'Caja',
+  //   url: '/general/caja',
+  //   icon: 'fas fa-cash-register'
+  // }
 ];

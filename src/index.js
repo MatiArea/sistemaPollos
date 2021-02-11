@@ -1,6 +1,6 @@
 import app from "./app";
 import "@babel/polyfill";
-import { sequelize } from './BaseDeDatos/database'
+import sequelize from './BaseDeDatos/database'
 
 async function main() {
     const port = 4000
