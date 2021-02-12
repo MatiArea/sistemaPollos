@@ -203,7 +203,7 @@ export async function getCash(req, res) {
         message: "Error, invalid token",
       });
     }
-    await Cash.findOne().then((cash) => {
+    await Cash.findByPk(1).then((cash) => {
       return res.status(200).json({
         cash,
       });
